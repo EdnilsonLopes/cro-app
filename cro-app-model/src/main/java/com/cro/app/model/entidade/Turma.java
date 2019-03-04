@@ -7,12 +7,15 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.validation.constraints.Max;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import com.cro.app.model.enumerator.SerieEnum;
 import com.cro.app.model.util.AbstractBasicEntity;
@@ -34,8 +37,9 @@ public class Turma
   private Integer id;
 
   @Column(nullable = false, length = 2)
-  @NotNull(message = "Preencha este campo. Ex.: \"UN\", \"A\", \"B\".")
-  @Max(value = 2, message = "Máximo permitido 2 caracteres")
+  @NotNull
+  @Size(min = 1,
+        message = "Preencha este campo. Ex.: \"UN\", \"A\", \"B\".")
   private String nome;
 
   @Column(length = 300)
@@ -43,10 +47,15 @@ public class Turma
 
   @Enumerated(EnumType.STRING)
   @Column(nullable = false)
+  @NotNull(message = "Selecione a série.")
   private SerieEnum serie;
 
   @OneToMany(mappedBy = "turma")
   private List<Aluno> alunos;
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_professor", referencedColumnName = "id")
+  private Professor professor;
 
   @Override
   public Integer getId() {
@@ -120,6 +129,31 @@ public class Turma
    */
   public void setAlunos(List<Aluno> alunos) {
     this.alunos = alunos;
+  }
+
+  /**
+   * Retorna o valor da propriedade professor.
+   * @return {@link #professor}
+   */
+  public Professor getProfessor() {
+    return professor;
+  }
+
+  /**
+   * Configura o valor da propriedade professor.
+   * @param professor atualiza {@link #professor}
+   */
+  public void setProfessor(Professor professor) {
+    this.professor = professor;
+  }
+
+  public String getNomeCompleto() {
+    return getSerie() + " " + getNome();
+  }
+
+  @Override
+  public String toString() {
+    return getNomeCompleto();
   }
 
 }

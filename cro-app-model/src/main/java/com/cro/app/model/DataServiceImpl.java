@@ -4,8 +4,14 @@ package com.cro.app.model;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 
+import com.cro.app.model.dao.AlunoDAO;
+import com.cro.app.model.dao.AlunoDAOImpl;
 import com.cro.app.model.dao.DisciplinaDAO;
 import com.cro.app.model.dao.DisciplinaDAOImpl;
+import com.cro.app.model.dao.ProfessorDAO;
+import com.cro.app.model.dao.ProfessorDAOImpl;
+import com.cro.app.model.dao.TurmaDAO;
+import com.cro.app.model.dao.TurmaDAOImpl;
 
 
 /**
@@ -32,8 +38,23 @@ public class DataServiceImpl
   }
 
   @Override
+  public AlunoDAO getAlunoDAO() {
+    return AlunoDAOImpl.getInstance();
+  }
+
+  @Override
   public DisciplinaDAO getDisciplinaDAO() {
     return DisciplinaDAOImpl.getInstance();
+  }
+
+  @Override
+  public ProfessorDAO getProfessorDAO() {
+    return ProfessorDAOImpl.getInstance();
+  }
+
+  @Override
+  public TurmaDAO getTurmaDAO() {
+    return TurmaDAOImpl.getInstance();
   }
 
 }

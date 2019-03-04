@@ -1,50 +1,42 @@
 package com.cro.app.model.entidade;
 
 
-import java.util.Date;
+import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
-import com.cro.app.model.enumerator.SitucacaoMatriculaEnum;
 import com.cro.app.model.util.AbstractBasicEntity;
 
 
 /**
- * Entidade {@link Aluno}
+ * Entidade {@link Professor}
  * @author Ednilson Brito Lopes
  */
 @Entity
 @SuppressWarnings("serial")
-public class Aluno
+public class Professor
   extends AbstractBasicEntity<Integer> {
 
   @Id
-  @GeneratedValue(strategy = GenerationType.AUTO)
-  @Column(nullable = false)
-  private Integer id;
-
-  @Column(nullable = false, length = 100)
-  @NotNull(message = "Digite o nome do aluno.")
-  private String nome;
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private int id;
 
   @Column(length = 100)
-  private String nomePai;
-
-  @Column(nullable = false, length = 100)
-  @NotNull(message = "Digite o nome da mãe.")
-  private String nomeMae;
+  @NotNull(message = "Preencha o campo de nome.")
+  @Size(min = 2, max = 100,
+        message = "O nome não pode ter menos que 2 caracteres!")
+  private String nome;
 
   @Column(length = 15)
   private String telefone;
@@ -70,17 +62,19 @@ public class Aluno
   @Column(length = 10)
   private Integer numeroEndereco;
 
-  @Temporal(TemporalType.DATE)
-  @Column
-  private Date dataNacimento;
+  @OneToMany(mappedBy = "professor")
+  private List<Turma> turmas;
 
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "id_turma", referencedColumnName = "id")
-  private Turma turma;
-
-  @Enumerated(EnumType.STRING)
-  @Column(nullable = false)
-  private SitucacaoMatriculaEnum situacaoMatricula;
+  @ManyToMany(cascade = {
+    CascadeType.PERSIST,
+    CascadeType.MERGE
+  })
+  @JoinTable(name = "disciplina_professor",
+             joinColumns = @JoinColumn(name = "id_professor",
+                                       referencedColumnName = "id"),
+             inverseJoinColumns = @JoinColumn(name = "id_disciplina",
+                                              referencedColumnName = "id"))
+  private List<Disciplina> disciplinas;
 
   @Override
   public Integer getId() {
@@ -106,38 +100,6 @@ public class Aluno
    */
   public void setNome(String nome) {
     this.nome = nome;
-  }
-
-  /**
-   * Retorna o valor da propriedade nomePai.
-   * @return {@link #nomePai}
-   */
-  public String getNomePai() {
-    return nomePai;
-  }
-
-  /**
-   * Configura o valor da propriedade nomePai.
-   * @param nomePai atualiza {@link #nomePai}
-   */
-  public void setNomePai(String nomePai) {
-    this.nomePai = nomePai;
-  }
-
-  /**
-   * Retorna o valor da propriedade nomeMae.
-   * @return {@link #nomeMae}
-   */
-  public String getNomeMae() {
-    return nomeMae;
-  }
-
-  /**
-   * Configura o valor da propriedade nomeMae.
-   * @param nomeMae atualiza {@link #nomeMae}
-   */
-  public void setNomeMae(String nomeMae) {
-    this.nomeMae = nomeMae;
   }
 
   /**
@@ -253,51 +215,68 @@ public class Aluno
   }
 
   /**
-   * Retorna o valor da propriedade turma.
-   * @return {@link #turma}
+   * Configura o valor da propriedade id.
+   * @param id atualiza {@link #id}
    */
-  public Turma getTurma() {
-    return turma;
+  public void setId(int id) {
+    this.id = id;
   }
 
   /**
-   * Configura o valor da propriedade turma.
-   * @param turma atualiza {@link #turma}
+   * Retorna o valor da propriedade turmas.
+   * @return {@link #turmas}
    */
-  public void setTurma(Turma turma) {
-    this.turma = turma;
+  public List<Turma> getTurmas() {
+    return turmas;
   }
 
   /**
-   * Retorna o valor da propriedade situacaoMatricula.
-   * @return {@link #situacaoMatricula}
+   * Configura o valor da propriedade turmas.
+   * @param turmas atualiza {@link #turmas}
    */
-  public SitucacaoMatriculaEnum getSituacaoMatricula() {
-    return situacaoMatricula;
+  public void setTurmas(List<Turma> turmas) {
+    this.turmas = turmas;
   }
 
   /**
-   * Configura o valor da propriedade situacaoMatricula.
-   * @param situacaoMatricula atualiza {@link #situacaoMatricula}
+   * Retorna o valor da propriedade disciplinas.
+   * @return {@link #disciplinas}
    */
-  public void setSituacaoMatricula(SitucacaoMatriculaEnum situacaoMatricula) {
-    this.situacaoMatricula = situacaoMatricula;
+  public List<Disciplina> getDisciplinas() {
+    return disciplinas;
   }
 
   /**
-   * Retorna o valor da propriedade dataNacimento.
-   * @return {@link #dataNacimento}
+   * Configura o valor da propriedade disciplinas.
+   * @param disciplinas atualiza {@link #disciplinas}
    */
-  public Date getDataNacimento() {
-    return dataNacimento;
+  public void setDisciplinas(List<Disciplina> disciplinas) {
+    this.disciplinas = disciplinas;
   }
 
-  /**
-   * Configura o valor da propriedade dataNacimento.
-   * @param dataNacimento atualiza {@link #dataNacimento}
-   */
-  public void setDataNacimento(Date dataNacimento) {
-    this.dataNacimento = dataNacimento;
+  public void addTurma(Turma turma) {
+    turma.setProfessor(this);
+    getTurmas().add(turma);
+  }
+
+  public void removeTurma(Turma turma) {
+    turma.setProfessor(null);
+    getTurmas().remove(turma);
+  }
+
+  public void addDisciplina(Disciplina disciplina) {
+    getDisciplinas().add(disciplina);
+    disciplina.getProfessores().add(this);
+  }
+
+  public void removeDisciplina(Disciplina disciplina) {
+    getDisciplinas().remove(disciplina);
+    disciplina.getProfessores().remove(this);
+  }
+
+  @Override
+  public String toString() {
+    return nome;
   }
 
 }

@@ -1,5 +1,6 @@
 package com.cro.app.view.util;
 
+
 import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
@@ -12,13 +13,20 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
+import com.vaadin.flow.component.html.Label;
+import com.vaadin.flow.component.html.NativeButton;
+import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
+import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
+import com.vaadin.flow.data.value.ValueChangeMode;
+
 
 /**
  * Base para criação de formulários de edição
@@ -28,242 +36,296 @@ import com.vaadin.flow.data.converter.StringToIntegerConverter;
  * @param <T>
  *            tipo da entidade a ser edidade
  */
-public class BeanForm<T extends AbstractBasicEntity<?>> extends Div {
+public class BeanForm<T extends AbstractBasicEntity<?>>
+  extends Div {
 
-	/**
-	 * Serial
-	 */
-	private static final long serialVersionUID = -7657180476942237003L;
+  /**
+   * Serial
+   */
+  private static final long serialVersionUID = -7657180476942237003L;
 
-	private VerticalLayout buttonLayout;
+  private VerticalLayout buttonLayout;
 
-	private T object;
-	private Binder<T> binder;
-	private Button saveButton;
-	private Button discardButton;
-	private Button cancelButton;
-	private Button deleteButton;
+  private T currentObject;
+  private Binder<T> binder;
+  private Button saveButton;
+  private Button discardButton;
+  private Button cancelButton;
+  private Button deleteButton;
 
-	private AbstractViewLogic<T> viewLogic;
+  private AbstractViewLogic<T> viewLogic;
 
-	/**
-	 * Tipo da classe passada por parâmetro
-	 */
-	private Class<T> type;
+  /**
+   * Tipo da classe passada por parâmetro
+   */
+  private Class<T> type;
 
-	public BeanForm(AbstractViewLogic<T> viewLogic) {
-		setClassName("default-form");
+  public BeanForm(AbstractViewLogic<T> viewLogic) {
+    setClassName("product-form");
+    this.binder = new BeanValidationBinder<>(getType());
+    this.viewLogic = viewLogic;
 
-		this.binder = new BeanValidationBinder<>(getType());
-		this.binder.bindInstanceFields(this);
-		this.viewLogic = viewLogic;
+  }
 
-		binder.addStatusChangeListener(event -> {
-			boolean isValid = !event.hasValidationErrors();
-			boolean hasChanges = binder.hasChanges();
-			saveButton.setEnabled(hasChanges && isValid);
-			discardButton.setEnabled(hasChanges);
-		});
-	}
+  public void inicializarBinder() {
+    this.binder.bindInstanceFields(this);
 
-	/**
-	 * Cria um campo para edição de números decimais e já faz o bind com a
-	 * propriedade da classe
-	 * 
-	 * @param caption
-	 *            label do campo
-	 * @param propertyName
-	 *            nome da propriedada da entidade que será feito o bind
-	 * @return um campo para editar valores decimais
-	 */
-	protected TextField createDecimalField(String caption, String propertyName) {
-		TextField field = new TextField(caption);
-		binder.forField(field).withConverter(new DecimalConverter()).bind(propertyName);
-		return field;
-	}
+    binder.addStatusChangeListener(event -> {
+      boolean isValid = !event.hasValidationErrors();
+      boolean hasChanges = binder.hasChanges();
+      saveButton.setEnabled(hasChanges && isValid);
+      discardButton.setEnabled(hasChanges);
+    });
+  }
 
-	/**
-	 * Cria um campo para edição de textos e já faz o bind com a propriedade da
-	 * classe
-	 * 
-	 * @param caption
-	 *            label do campo
-	 * @param propertyName
-	 *            nome da propriedada da entidade que será feito o bind
-	 * @return um campo para editar textos
-	 */
-	protected TextField createTextField(String caption, String propertyName) {
-		TextField field = new TextField(caption);
-		binder.forField(field).bind(propertyName);
-		return field;
-	}
+  /**
+   * Cria um campo para edição de números decimais e já faz o bind com a
+   * propriedade da classe
+   * 
+   * @param caption
+   *            label do campo
+   * @param propertyName
+   *            nome da propriedada da entidade que será feito o bind
+   * @return um campo para editar valores decimais
+   */
+  protected TextField createDecimalField(String caption,
+                                         String propertyName) {
+    TextField field = new TextField(caption);
+    field.setWidth("100%");
+    field.setValueChangeMode(ValueChangeMode.EAGER);
+    binder.forField(field).withConverter(new DecimalConverter()).bind(propertyName);
+    return field;
+  }
 
-	/**
-	 * Cria um campo para edição de valores inteiros e já faz o bind com a
-	 * propriedade da classe
-	 * 
-	 * @param caption
-	 *            label do campo
-	 * @param propertyName
-	 *            nome da propriedada da entidade que será feito o bind
-	 * @return um campo para editar valores inteiros
-	 */
-	protected TextField createIntegerField(String caption, String propertyName) {
-		TextField field = new TextField(caption);
-		binder.forField(field).withConverter(new IntegerConverter()).bind(propertyName);
-		return field;
-	}
+  protected TextArea createTextArea(String caption,
+                                    String propertyName) {
+    TextArea field = new TextArea(caption);
+    field.setWidth("100%");
+    field.setValueChangeMode(ValueChangeMode.EAGER);
+    binder.forField(field).bind(propertyName);
+    return field;
+  }
 
-	/**
-	 * Cria uma ComboBox e já faz o bind com a propriedade da classe
-	 * 
-	 * @param caption
-	 *            label do campo
-	 * @param propertyName
-	 *            nome da propriedada da entidade que será feito o bind
-	 * @return uma ComboBox
-	 */
-	protected ComboBox<T> createComboBox(String caption, String propertyName, List<T> items) {
-		ComboBox<T> combo = new ComboBox<>(caption, items);
-		binder.forField(combo).bind(propertyName);
-		return combo;
-	}
+  /**
+   * Cria um campo para edição de textos e já faz o bind com a propriedade da
+   * classe
+   * 
+   * @param caption
+   *            label do campo
+   * @param propertyName
+   *            nome da propriedada da entidade que será feito o bind
+   * @return um campo para editar textos
+   */
+  protected TextField createTextField(String caption, String propertyName) {
+    TextField field = new TextField(caption);
+    field.setWidth("100%");
+    field.setValueChangeMode(ValueChangeMode.EAGER);
+    binder.forField(field).bind(propertyName);
+    return field;
+  }
 
-	protected Component createButtonBar() {
-		buttonLayout = new VerticalLayout();
-		buttonLayout.setSizeUndefined();
-		buttonLayout.add(createSaveButton(), createDiscartChagesButton(), createCancelButton(), createDeleteButton());
+  /**
+   * Cria um campo para edição de valores inteiros e já faz o bind com a
+   * propriedade da classe
+   * 
+   * @param caption
+   *            label do campo
+   * @param propertyName
+   *            nome da propriedada da entidade que será feito o bind
+   * @return um campo para editar valores inteiros
+   */
+  protected TextField createIntegerField(String caption,
+                                         String propertyName) {
+    TextField field = new TextField(caption);
+    field.setWidth("100%");
+    field.setValueChangeMode(ValueChangeMode.EAGER);
+    binder.forField(field).withConverter(new IntegerConverter()).bind(propertyName);
+    return field;
+  }
 
-		return buttonLayout;
-	}
+  /**
+   * Cria uma ComboBox e já faz o bind com a propriedade da classe
+   * 
+   * @param caption
+   *            label do campo
+   * @param propertyName
+   *            nome da propriedada da entidade que será feito o bind
+   * @return uma ComboBox
+   */
+  @SuppressWarnings("unchecked")
+  protected ComboBox createComboBox(String caption, String propertyName,
+                                    List items) {
+    ComboBox combo = new ComboBox<>(caption, items);
+    combo.setWidth("100%");
+    binder.forField(combo).bind(propertyName);
+    return combo;
+  }
 
-	/**
-	 * @return o botão para salvar
-	 */
-	protected Button createSaveButton() {
-		saveButton = new Button("Salvar");
-		saveButton.setWidth("100%");
-		saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-		saveButton.addClickListener(e -> {
-			if (object != null && binder.writeBeanIfValid(object)) {
-				viewLogic.saveObject(object);
-			}
-		});
-		return saveButton;
-	}
+  protected Component createButtonBar() {
+    buttonLayout = new VerticalLayout();
+    buttonLayout.setSizeUndefined();
+    buttonLayout.add(createSaveButton(),
+                     createDiscartChagesButton(),
+                     createCancelButton(),
+                     createDeleteButton());
+    buttonLayout.setWidth("100%");
+    return buttonLayout;
+  }
 
-	protected Button createDiscartChagesButton() {
-		discardButton = new Button("Descartar Alterações");
-		discardButton.setWidth("100%");
-		discardButton.addClickListener(e -> viewLogic.editObject(object));
-		return discardButton;
-	}
+  /**
+   * @return o botão para salvar
+   */
+  protected Button createSaveButton() {
+    saveButton = new Button("Salvar");
+    saveButton.setWidth("100%");
+    saveButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    saveButton.addClickListener(e -> {
+      if (currentObject != null && binder.writeBeanIfValid(currentObject)) {
+        viewLogic.saveObject(currentObject);
+      }
+    });
+    saveButton.setWidth("100%");
+    return saveButton;
+  }
 
-	protected Button createCancelButton() {
-		cancelButton = new Button("Cancelar");
-		cancelButton.setWidth("100%");
-		cancelButton.addClickListener(e -> viewLogic.cancelObject());
-		getElement().addEventListener("keydown", event -> viewLogic.cancelObject()).setFilter("event.key == 'Escape'");
-		return cancelButton;
-	}
+  protected Button createDiscartChagesButton() {
+    discardButton = new Button("Descartar Alterações");
+    discardButton.setWidth("100%");
+    discardButton.addClickListener(e -> viewLogic.editObject(currentObject));
+    discardButton.setWidth("100%");
+    return discardButton;
+  }
 
-	protected Button createDeleteButton() {
-		deleteButton = new Button("Deletar");
-		deleteButton.setWidth("100%");
-		deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
-		deleteButton.addClickListener(event -> {
-			if (object != null) {
-				viewLogic.deleteObject(object);
-			}
-		});
-		return deleteButton;
-	}
+  protected Button createCancelButton() {
+    cancelButton = new Button("Cancelar");
+    cancelButton.setWidth("100%");
+    cancelButton.addClickListener(e -> viewLogic.cancelObject());
+    getElement().addEventListener("keydown",
+                                  event -> viewLogic.cancelObject()).setFilter("event.key == 'Escape'");
+    cancelButton.setWidth("100%");
+    return cancelButton;
+  }
 
-	/**
-	 * @return o tipo {@link Class} da entidade usada como parâmetro na classe
-	 */
-	@SuppressWarnings("unchecked")
-	private Class<T> getType() {
-		if (this.type == null) {
-			this.type = (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
-		}
-		return type;
-	}
+  protected Button createDeleteButton() {
+    deleteButton = new Button("Deletar");
+    deleteButton.setWidth("100%");
+    deleteButton.addThemeVariants(ButtonVariant.LUMO_ERROR,
+                                  ButtonVariant.LUMO_PRIMARY);
+    deleteButton.addClickListener(event -> {
+      if (currentObject != null) {
+        Dialog dialog = new Dialog();
+        dialog.setCloseOnEsc(false);
+        dialog.setCloseOnOutsideClick(false);
+        Label messageLabel = new Label("Deseja realmente excluir?");
+        VerticalLayout vl = new VerticalLayout(messageLabel);
+        Button confirmButton = new Button("Sim", e -> {
+          viewLogic.deleteObject(currentObject);
+          dialog.close();
+        });
+        confirmButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+        Button cancelButton = new Button("Não", e -> {
+          dialog.close();
+        });
+        HorizontalLayout buttonBar =
+          new HorizontalLayout(confirmButton, cancelButton);
+        vl.add(buttonBar);
+        dialog.add(vl);
+        dialog.open();
+      }
+    });
+    deleteButton.setWidth("100%");
+    return deleteButton;
+  }
 
-	public void editObject(T obj) {
-		try {
-			if (obj == null) {
-				obj = getType().newInstance();
-			}
-			deleteButton.setVisible(!obj.isNewObject());
-			object = obj;
-			binder.readBean(obj);
-		} catch (InstantiationException | IllegalAccessException e) {
-			e.printStackTrace();
-		}
-	}
+  /**
+   * @return o tipo {@link Class} da entidade usada como parâmetro na classe
+   */
+  @SuppressWarnings("unchecked")
+  private Class<T> getType() {
+    if (this.type == null) {
+      this.type =
+        (Class<T>) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0];
+    }
+    return type;
+  }
 
-	/**
-	 * Retorna o valor da propriedade object.
-	 * 
-	 * @return {@link #object}
-	 */
-	public T getObject() {
-		return object;
-	}
+  public void editObject(T obj) {
+    try {
+      if (obj == null) {
+        obj = getType().newInstance();
+      }
+      deleteButton.setVisible(!obj.isNewObject());
+      currentObject = obj;
+      binder.readBean(obj);
+    }
+    catch (InstantiationException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
+  }
 
-	/**
-	 * Configura o valor da propriedade object.
-	 * 
-	 * @param object
-	 *            atualiza {@link #object}
-	 */
-	public void setObject(T object) {
-		this.object = object;
-	}
+  /**
+   * Retorna o valor da propriedade object.
+   * 
+   * @return {@link #currentObject}
+   */
+  public T getObject() {
+    return currentObject;
+  }
 
-	private static class DecimalConverter extends StringToBigDecimalConverter {
+  /**
+   * Configura o valor da propriedade object.
+   * 
+   * @param object
+   *            atualiza {@link #currentObject}
+   */
+  public void setObject(T object) {
+    this.currentObject = object;
+  }
 
-		/**
-		 * Serial
-		 */
-		private static final long serialVersionUID = -3291469744436486489L;
+  private static class DecimalConverter
+    extends StringToBigDecimalConverter {
 
-		public DecimalConverter() {
-			super(BigDecimal.ZERO, "Valor inválido.");
-		}
+    /**
+     * Serial
+     */
+    private static final long serialVersionUID = -3291469744436486489L;
 
-		@Override
-		protected NumberFormat getFormat(Locale locale) {
-			NumberFormat format = super.getFormat(locale);
-			if (format instanceof DecimalFormat) {
-				format.setMaximumFractionDigits(2);
-				format.setMinimumFractionDigits(2);
-			}
-			return format;
-		}
-	}
+    public DecimalConverter() {
+      super(BigDecimal.ZERO, "Valor inválido.");
+    }
 
-	private static class IntegerConverter extends StringToIntegerConverter {
+    @Override
+    protected NumberFormat getFormat(Locale locale) {
+      NumberFormat format = super.getFormat(locale);
+      if (format instanceof DecimalFormat) {
+        format.setMaximumFractionDigits(2);
+        format.setMinimumFractionDigits(2);
+      }
+      return format;
+    }
+  }
 
-		/**
-		 * Serial
-		 */
-		private static final long serialVersionUID = 7042445253621503717L;
+  private static class IntegerConverter
+    extends StringToIntegerConverter {
 
-		public IntegerConverter() {
-			super(0, "Valor inválido. Deve ser um número inteiro!");
-		}
+    /**
+     * Serial
+     */
+    private static final long serialVersionUID = 7042445253621503717L;
 
-		@Override
-		protected NumberFormat getFormat(Locale locale) {
-			DecimalFormat format = new DecimalFormat();
-			format.setMaximumFractionDigits(0);
-			format.setDecimalSeparatorAlwaysShown(false);
-			format.setParseIntegerOnly(true);
-			format.setGroupingUsed(false);
-			return format;
-		}
-	}
+    public IntegerConverter() {
+      super(0, "Valor inválido. Deve ser um número inteiro!");
+    }
+
+    @Override
+    protected NumberFormat getFormat(Locale locale) {
+      DecimalFormat format = new DecimalFormat();
+      format.setMaximumFractionDigits(0);
+      format.setDecimalSeparatorAlwaysShown(false);
+      format.setParseIntegerOnly(true);
+      format.setGroupingUsed(false);
+      return format;
+    }
+  }
 
 }

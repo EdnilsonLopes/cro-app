@@ -1,9 +1,8 @@
 package com.cro.app.view;
 
 
-import com.cro.app.about.AboutView;
-import com.cro.app.crud.SampleCrudView;
 import com.cro.app.view.disciplina.DisciplinaPage;
+import com.cro.app.view.turma.TurmaPage;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.FlexLayout;
@@ -41,15 +40,12 @@ public class MainLayout
     setClassName("main-layout");
 
     menu = new Menu();
-    menu.addView(SampleCrudView.class,
-                 "Inventario",
-                 VaadinIcon.AIRPLANE.create());
-    menu.addView(AboutView.class,
-                 AboutView.VIEW_NAME,
-                 VaadinIcon.INFO_CIRCLE.create());
     menu.addView(DisciplinaPage.class,
                  DisciplinaPage.PAGE_NAME,
                  VaadinIcon.BOOK.create());
+    menu.addView(TurmaPage.class,
+                 TurmaPage.PAGE_NAME,
+                 VaadinIcon.ACADEMY_CAP.create());
 
     add(menu);
   }

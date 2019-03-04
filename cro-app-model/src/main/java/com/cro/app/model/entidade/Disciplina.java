@@ -1,11 +1,14 @@
 package com.cro.app.model.entidade;
 
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -37,6 +40,9 @@ public class Disciplina
 
   @Column(nullable = true, length = 300)
   private String descricao;
+
+  @ManyToMany(mappedBy = "disciplinas")
+  private List<Professor> professores;
 
   @Override
   public Integer getId() {
@@ -78,6 +84,27 @@ public class Disciplina
    */
   public void setDescricao(String descricao) {
     this.descricao = descricao;
+  }
+
+  /**
+   * Retorna o valor da propriedade professores.
+   * @return {@link #professores}
+   */
+  public List<Professor> getProfessores() {
+    return professores;
+  }
+
+  /**
+   * Configura o valor da propriedade professores.
+   * @param professores atualiza {@link #professores}
+   */
+  public void setProfessores(List<Professor> professores) {
+    this.professores = professores;
+  }
+
+  @Override
+  public String toString() {
+    return nome;
   }
 
 }

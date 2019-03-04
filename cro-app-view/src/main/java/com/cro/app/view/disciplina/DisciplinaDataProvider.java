@@ -6,7 +6,7 @@ import java.util.Objects;
 
 import com.cro.app.model.DataService;
 import com.cro.app.model.entidade.Disciplina;
-import com.vaadin.flow.data.provider.ListDataProvider;
+import com.cro.app.view.util.AbstractDataProvider;
 
 
 /**
@@ -15,7 +15,7 @@ import com.vaadin.flow.data.provider.ListDataProvider;
  */
 @SuppressWarnings("serial")
 public class DisciplinaDataProvider
-  extends ListDataProvider<Disciplina> {
+  extends AbstractDataProvider<Disciplina> {
 
   private String filterText = "";
 
@@ -23,24 +23,24 @@ public class DisciplinaDataProvider
     super(DataService.get().getDisciplinaDAO().loadAll());
   }
 
-  public boolean save(Disciplina obj) {
-    boolean isNewObject = obj.isNewObject();
+  //  public boolean save(Disciplina obj) {
+  //    boolean isNewObject = obj.isNewObject();
+  //
+  //    if (isNewObject) {
+  //      DataService.get().getDisciplinaDAO().insert(obj);
+  //      refreshAll();
+  //    }
+  //    else {
+  //      DataService.get().getDisciplinaDAO().update(obj);
+  //      refreshItem(obj);
+  //    }
+  //    return isNewObject;
+  //  }
 
-    if (isNewObject) {
-      DataService.get().getDisciplinaDAO().insert(obj);
-      refreshAll();
-    }
-    else {
-      DataService.get().getDisciplinaDAO().update(obj);
-      refreshItem(obj);
-    }
-    return isNewObject;
-  }
-
-  public void delete(Disciplina obj) {
-    DataService.get().getDisciplinaDAO().delete(obj);
-    refreshAll();
-  }
+  //  public void delete(Disciplina obj) {
+  //    DataService.get().getDisciplinaDAO().delete(obj);
+  //    refreshAll();
+  //  }
 
   public void setFilter(String filterText) {
     Objects.requireNonNull(filterText, "Filter text cannot be null.");
@@ -54,16 +54,32 @@ public class DisciplinaDataProvider
       passesFilter(disciplina.getDescricao(), filterText));
   }
 
-  @Override
-  public Integer getId(Disciplina item) {
-    Objects.requireNonNull(item,
-                           "Não foi possivel encontrar o ID da Disciplina.");
-    return item.getId();
+  //  @Override
+  //  public Integer getId(Disciplina item) {
+  //    Objects.requireNonNull(item,
+  //                           "Não foi possivel encontrar o ID da Disciplina.");
+  //    return item.getId();
+  //  }
+
+  protected boolean passesFilter(Object object, String filterText) {
+    return object != null &&
+      object.toString().toLowerCase(new Locale("PT",
+                                               "BR")).contains(filterText);
   }
 
-  private boolean passesFilter(Object object, String filterText) {
-    return object != null &&
-      object.toString().toLowerCase(Locale.ENGLISH).contains(filterText);
+  @Override
+  public void insert(Disciplina obj) {
+    DataService.get().getDisciplinaDAO().insert(obj);
+  }
+
+  @Override
+  public void update(Disciplina obj) {
+    DataService.get().getDisciplinaDAO().update(obj);
+  }
+
+  @Override
+  public void delete(Disciplina obj) {
+    DataService.get().getDisciplinaDAO().update(obj);
   }
 
 }

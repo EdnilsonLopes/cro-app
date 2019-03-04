@@ -4,11 +4,16 @@
   -- for more information see: https://cdn.vaadin.com/vaadin-lumo-styles/1.3.1/demo/compatibility.html
   -->
 <!-- Remember to import custom-style, which is included in the Polymer package -->
-<link rel="import"
-      href="../bower_components/polymer/lib/elements/custom-style.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/custom-style.html">
 
 <custom-style>
     <style>
+        html {
+            --lumo-primary-color: hsl(224, 72%, 48%);
+            --lumo-primary-color-10pct: hsla(214, 90%, 62%, 0.473);
+            --lumo-primary-color-50pct: hsla(59, 100%, 50%, 0.671);
+        }
+
         .login-information {
             min-width: 300px;
             flex: 0;
@@ -37,7 +42,7 @@
         .menu-bar {
             flex-direction: column;
             flex-shrink: 0;
-            background: var(--lumo-base-color);
+            background:  hsla(64, 100%, 50%, 0.171);
             box-shadow: var(--overlay-box-shadow);
         }
 
@@ -54,7 +59,7 @@
             margin: 0 auto;
         }
 
-        .menu-link > span {
+        .menu-link>span {
             display: block;
         }
 
@@ -164,6 +169,5 @@
         .vaadin-label:hover {
             color: var(--lumo-body-text-color);
         }
-
     </style>
 </custom-style>
