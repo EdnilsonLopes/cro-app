@@ -1,5 +1,8 @@
 package com.cro.app.crud;
 
+import com.cro.app.backend.DataService;
+import com.cro.app.backend.data.Product;
+import com.cro.app.view.MainLayout;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -12,9 +15,6 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 import com.vaadin.flow.router.Route;
 import com.vaadin.flow.router.RouteAlias;
-import com.cro.app.MainLayout;
-import com.cro.app.backend.DataService;
-import com.cro.app.backend.data.Product;
 
 /**
  * A view for performing create-read-update-delete operations on products.

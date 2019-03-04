@@ -6,6 +6,7 @@ import java.text.NumberFormat;
 import java.util.Collection;
 import java.util.Locale;
 
+import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.checkbox.CheckboxGroup;
@@ -32,166 +33,159 @@ import com.cro.app.backend.data.Product;
  */
 public class ProductForm extends Div {
 
-    private VerticalLayout content;
+	private VerticalLayout content;
 
-    private TextField productName;
-    private TextField price;
-    private TextField stockCount;
-    private ComboBox<Availability> availability;
-    private CheckboxGroup<Category> category;
-    private Button save;
-    private Button discard;
-    private Button cancel;
-    private Button delete;
+	private TextField productName;
+	private TextField price;
+	private TextField stockCount;
+	private ComboBox<Availability> availability;
+	private CheckboxGroup<Category> category;
+	private Button save;
+	private Button discard;
+	private Button cancel;
+	private Button delete;
 
-    private SampleCrudLogic viewLogic;
-    private Binder<Product> binder;
-    private Product currentProduct;
+	private SampleCrudLogic viewLogic;
+	private Binder<Product> binder;
+	private Product currentProduct;
 
-    private static class PriceConverter extends StringToBigDecimalConverter {
+	private static class PriceConverter extends StringToBigDecimalConverter {
 
-        public PriceConverter() {
-            super(BigDecimal.ZERO, "Cannot convert value to a number.");
-        }
+		public PriceConverter() {
+			super(BigDecimal.ZERO, "Cannot convert value to a number.");
+		}
 
-        @Override
-        protected NumberFormat getFormat(Locale locale) {
-            // Always display currency with two decimals
-            NumberFormat format = super.getFormat(locale);
-            if (format instanceof DecimalFormat) {
-                format.setMaximumFractionDigits(2);
-                format.setMinimumFractionDigits(2);
-            }
-            return format;
-        }
-    }
+		@Override
+		protected NumberFormat getFormat(Locale locale) {
+			// Always display currency with two decimals
+			NumberFormat format = super.getFormat(locale);
+			if (format instanceof DecimalFormat) {
+				format.setMaximumFractionDigits(2);
+				format.setMinimumFractionDigits(2);
+			}
+			return format;
+		}
+	}
 
-    private static class StockCountConverter extends StringToIntegerConverter {
+	private static class StockCountConverter extends StringToIntegerConverter {
 
-        public StockCountConverter() {
-            super(0, "Could not convert value to " + Integer.class.getName()
-                    + ".");
-        }
+		public StockCountConverter() {
+			super(0, "Could not convert value to " + Integer.class.getName() + ".");
+		}
 
-        @Override
-        protected NumberFormat getFormat(Locale locale) {
-            // Do not use a thousands separator, as HTML5 input type
-            // number expects a fixed wire/DOM number format regardless
-            // of how the browser presents it to the user (which could
-            // depend on the browser locale).
-            DecimalFormat format = new DecimalFormat();
-            format.setMaximumFractionDigits(0);
-            format.setDecimalSeparatorAlwaysShown(false);
-            format.setParseIntegerOnly(true);
-            format.setGroupingUsed(false);
-            return format;
-        }
-    }
+		@Override
+		protected NumberFormat getFormat(Locale locale) {
+			// Do not use a thousands separator, as HTML5 input type
+			// number expects a fixed wire/DOM number format regardless
+			// of how the browser presents it to the user (which could
+			// depend on the browser locale).
+			DecimalFormat format = new DecimalFormat();
+			format.setMaximumFractionDigits(0);
+			format.setDecimalSeparatorAlwaysShown(false);
+			format.setParseIntegerOnly(true);
+			format.setGroupingUsed(false);
+			return format;
+		}
+	}
 
-    public ProductForm(SampleCrudLogic sampleCrudLogic) {
-        setClassName("product-form");
+	public ProductForm(SampleCrudLogic sampleCrudLogic) {
+		setClassName("product-form");
 
-        content = new VerticalLayout();
-        content.setSizeUndefined();
-        add(content);
+		content = new VerticalLayout();
+		content.setSizeUndefined();
+		add(content);
 
-        viewLogic = sampleCrudLogic;
+		viewLogic = sampleCrudLogic;
 
-        productName = new TextField("Product name");
-        productName.setWidth("100%");
-        productName.setRequired(true);
-        productName.setValueChangeMode(ValueChangeMode.EAGER);
-        content.add(productName);
+		productName = new TextField("Product name");
+		productName.setWidth("100%");
+		productName.setRequired(true);
+		productName.setValueChangeMode(ValueChangeMode.EAGER);
+		content.add(productName);
 
-        price = new TextField("Price");
-        price.setSuffixComponent(new Span("€"));
-        price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        price.setValueChangeMode(ValueChangeMode.EAGER);
+		price = new TextField("Price");
+		price.setSuffixComponent(new Span("€"));
+		price.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+		price.setValueChangeMode(ValueChangeMode.EAGER);
 
-        stockCount = new TextField("In stock");
-        stockCount.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
-        stockCount.setValueChangeMode(ValueChangeMode.EAGER);
+		stockCount = new TextField("In stock");
+		stockCount.addThemeVariants(TextFieldVariant.LUMO_ALIGN_RIGHT);
+		stockCount.setValueChangeMode(ValueChangeMode.EAGER);
 
-        HorizontalLayout horizontalLayout = new HorizontalLayout(price,
-                stockCount);
-        horizontalLayout.setWidth("100%");
-        horizontalLayout.setFlexGrow(1, price, stockCount);
-        content.add(horizontalLayout);
+		HorizontalLayout horizontalLayout = new HorizontalLayout(price, stockCount);
+		horizontalLayout.setWidth("100%");
+		horizontalLayout.setFlexGrow(1, price, stockCount);
+		content.add(horizontalLayout);
 
-        availability = new ComboBox<>("Availability");
-        availability.setWidth("100%");
-        availability.setRequired(true);
-        availability.setItems(Availability.values());
-        availability.setAllowCustomValue(false);
-        content.add(availability);
+		availability = new ComboBox<>("Availability");
+		availability.setWidth("100%");
+		availability.setRequired(true);
+		availability.setItems(Availability.values());
+		availability.setAllowCustomValue(false);
+		content.add(availability);
 
-        category = new CheckboxGroup<>();
-        category.setId("category");
-        category.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
-        Label categoryLabel = new Label("Categories");
-        categoryLabel.setClassName("vaadin-label");
-        categoryLabel.setFor(category);
-        content.add(categoryLabel, category);
+		category = new CheckboxGroup<>();
+		category.setId("category");
+		category.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+		Label categoryLabel = new Label("Categories");
+		categoryLabel.setClassName("vaadin-label");
+		categoryLabel.setFor(category);
+		content.add(categoryLabel, category);
 
-        binder = new BeanValidationBinder<>(Product.class);
-        binder.forField(price).withConverter(new PriceConverter())
-                .bind("price");
-        binder.forField(stockCount).withConverter(new StockCountConverter())
-                .bind("stockCount");
-        binder.bindInstanceFields(this);
+		binder = new BeanValidationBinder<>(Product.class);
+		binder.forField(price).withConverter(new PriceConverter()).bind("price");
+		binder.forField(stockCount).withConverter(new StockCountConverter()).bind("stockCount");
+		binder.bindInstanceFields(this);
 
-        // enable/disable save button while editing
-        binder.addStatusChangeListener(event -> {
-            boolean isValid = !event.hasValidationErrors();
-            boolean hasChanges = binder.hasChanges();
-            save.setEnabled(hasChanges && isValid);
-            discard.setEnabled(hasChanges);
-        });
+		// enable/disable save button while editing
+		binder.addStatusChangeListener(event -> {
+			boolean isValid = !event.hasValidationErrors();
+			boolean hasChanges = binder.hasChanges();
+			save.setEnabled(hasChanges && isValid);
+			discard.setEnabled(hasChanges);
+		});
 
-        save = new Button("Save");
-        save.setWidth("100%");
-        save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
-        save.addClickListener(event -> {
-            if (currentProduct != null
-                    && binder.writeBeanIfValid(currentProduct)) {
-                viewLogic.saveProduct(currentProduct);
-            }
-        });
+		save = new Button("Save");
+		save.setWidth("100%");
+		save.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+		save.addClickListener(event -> {
+			if (currentProduct != null && binder.writeBeanIfValid(currentProduct)) {
+				viewLogic.saveProduct(currentProduct);
+			}
+		});
 
-        discard = new Button("Discard changes");
-        discard.setWidth("100%");
-        discard.addClickListener(
-                event -> viewLogic.editProduct(currentProduct));
+		discard = new Button("Discard changes");
+		discard.setWidth("100%");
+		discard.addClickListener(event -> viewLogic.editProduct(currentProduct));
 
-        cancel = new Button("Cancel");
-        cancel.setWidth("100%");
-        cancel.addClickListener(event -> viewLogic.cancelProduct());
-        getElement()
-                .addEventListener("keydown", event -> viewLogic.cancelProduct())
-                .setFilter("event.key == 'Escape'");
+		cancel = new Button("Cancel");
+		cancel.setWidth("100%");
+		cancel.addClickListener(event -> viewLogic.cancelProduct());
+		getElement().addEventListener("keydown", event -> viewLogic.cancelProduct()).setFilter("event.key == 'Escape'");
 
-        delete = new Button("Delete");
-        delete.setWidth("100%");
-        delete.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
-        delete.addClickListener(event -> {
-            if (currentProduct != null) {
-                viewLogic.deleteProduct(currentProduct);
-            }
-        });
+		delete = new Button("Delete");
+		delete.setWidth("100%");
+		delete.addThemeVariants(ButtonVariant.LUMO_ERROR, ButtonVariant.LUMO_PRIMARY);
+		delete.addClickListener(event -> {
+			if (currentProduct != null) {
+				viewLogic.deleteProduct(currentProduct);
+			}
+		});
 
-        content.add(save, discard, delete, cancel);
-    }
+		content.add(save, discard, delete, cancel);
+	}
 
-    public void setCategories(Collection<Category> categories) {
-        category.setItems(categories);
-    }
+	public void setCategories(Collection<Category> categories) {
+		category.setItems(categories);
+	}
 
-    public void editProduct(Product product) {
-        if (product == null) {
-            product = new Product();
-        }
-        delete.setVisible(!product.isNewProduct());
-        currentProduct = product;
-        binder.readBean(product);
-    }
+	public void editProduct(Product product) {
+		if (product == null) {
+			product = new Product();
+		}
+		delete.setVisible(!product.isNewProduct());
+		currentProduct = product;
+		binder.readBean(product);
+	}
+
 }
