@@ -45,12 +45,12 @@ public class Disciplina
   private List<Professor> professores;
 
   @Override
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 
   @Override
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 

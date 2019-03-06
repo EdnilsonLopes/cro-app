@@ -70,7 +70,7 @@ public abstract class AbstractViewLogic<T extends AbstractBasicEntity<?>>
     page.showSaveNotification(page.getNomeEntidade() + " " +
       obj + (newObject
         ? " adicionad" + page.getArtigoEntidade()
-        : " atualizado" +
+        : " atualizad" +
           page.getArtigoEntidade()));
   }
 

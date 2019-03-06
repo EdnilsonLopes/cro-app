@@ -33,7 +33,7 @@ public class Aluno
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
   @Column(nullable = false)
-  private Integer id;
+  private int id;
 
   @Column(nullable = false, length = 100)
   @NotNull(message = "Digite o nome do aluno.")
@@ -83,12 +83,12 @@ public class Aluno
   private SitucacaoMatriculaEnum situacaoMatricula;
 
   @Override
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 
   @Override
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 

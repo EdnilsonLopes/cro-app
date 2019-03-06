@@ -5,12 +5,14 @@ import com.cro.app.model.DataService;
 import com.cro.app.model.entidade.Turma;
 import com.cro.app.model.enumerator.SerieEnum;
 import com.cro.app.view.util.BeanForm;
+import com.cro.app.view.util.component.TabSheet;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.formlayout.FormLayout;
+import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
+import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.tabs.Tab;
-import com.vaadin.flow.component.tabs.Tabs;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 
@@ -25,19 +27,21 @@ public class TurmaForm
   public TurmaForm(TurmaViewLogic viewLogic) {
     super(viewLogic);
     VerticalLayout content = new VerticalLayout();
+    content.setHeight("100%");
     content = new VerticalLayout();
     content.setSizeUndefined();
     add(content);
 
-    //    content.add(createTabsLayout());
-    content.add(createLayout());
+    content.add(createTabsLayout());
 
     content.add(createButtonBar());
     inicializarBinder();
   }
 
   private Component createTabsLayout() {
-    Tabs tabs = new Tabs(createTabGeral(), createTabAlunos());
+    TabSheet tabs = new TabSheet();
+    tabs.addTab("Geral", VaadinIcon.CLIPBOARD.create(), createTabGeral());
+    tabs.addTab("Alunos", VaadinIcon.CHILD.create(), createTabAlunos());
     return tabs;
   }
 
@@ -59,25 +63,32 @@ public class TurmaForm
     return layout;
   }
 
-  private Tab createTabGeral() {
-    Tab tabGeral = new Tab("Geral");
+  private Component createTabGeral() {
     VerticalLayout layout = new VerticalLayout();
-    layout = new VerticalLayout();
+    layout.setSpacing(false);
+    layout.setPadding(false);
+    layout.setMargin(false);
     layout.setSizeUndefined();
-    tabGeral.add(layout);
-    HorizontalLayout hl = new HorizontalLayout();
-    hl.setWidth("100%");
-    hl.add(createSerieCbx(), createNomeEdit());
-    layout.add(hl, createProfessorCbx(), createDescricaoEdit());
-    return tabGeral;
+    FormLayout fl = new FormLayout();
+    fl.setResponsiveSteps(new ResponsiveStep("0", 1),
+                          new ResponsiveStep("21em", 2));
+    fl.setWidth("100%");
+    fl.add(createSerieCbx(), createNomeEdit());
+    layout.add(fl, createProfessorCbx(), createDescricaoEdit());
+    return layout;
   }
 
-  private Tab createTabAlunos() {
-    Tab tabAlunos = new Tab("Alunos");
+  private Component createTabAlunos() {
+    VerticalLayout tabAlunos = new VerticalLayout();
+    tabAlunos.setSpacing(false);
+    tabAlunos.setPadding(false);
+    tabAlunos.setMargin(false);
     AlunoTurmaGrid grid = new AlunoTurmaGrid();
+    grid.addClassName("grid-in-form");
     grid.setItems(DataService.get().getAlunoDAO().loadAll());
     tabAlunos.add(grid);
-    return tabAlunos;
+    tabAlunos.expand(grid);
+    return grid;
   }
 
   @SuppressWarnings("unchecked")

@@ -13,16 +13,17 @@ import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
+import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
-import com.vaadin.flow.component.html.NativeButton;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.converter.LocalDateToDateConverter;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
 import com.vaadin.flow.data.value.ValueChangeMode;
@@ -152,13 +153,28 @@ public class BeanForm<T extends AbstractBasicEntity<?>>
    *            nome da propriedada da entidade que será feito o bind
    * @return uma ComboBox
    */
-  @SuppressWarnings("unchecked")
-  protected ComboBox createComboBox(String caption, String propertyName,
-                                    List items) {
-    ComboBox combo = new ComboBox<>(caption, items);
+  protected <U> ComboBox<U> createComboBox(String caption,
+                                           String propertyName,
+                                           List<U> items) {
+    ComboBox<U> combo = new ComboBox<>(caption, items);
     combo.setWidth("100%");
     binder.forField(combo).bind(propertyName);
     return combo;
+  }
+
+  /**
+   * Cria um componente para data e faz o bind com a propriedade da classe
+   * @param caption
+   *            label do campo
+   * @param propertyName
+   *            nome da propriedada da entidade que será feito o bind
+   * @return um {@link DatePicker}
+   */
+  protected DatePicker createDateField(String caption,
+                                       String propertyName) {
+    DatePicker field = new DatePicker(caption);
+    binder.forField(field).withConverter(new LocalDateToDateConverter()).bind(propertyName);
+    return field;
   }
 
   protected Component createButtonBar() {
@@ -257,10 +273,15 @@ public class BeanForm<T extends AbstractBasicEntity<?>>
       deleteButton.setVisible(!obj.isNewObject());
       currentObject = obj;
       binder.readBean(obj);
+      doEdit();
     }
     catch (InstantiationException | IllegalAccessException e) {
       e.printStackTrace();
     }
+  }
+  
+  protected void doEdit() {
+    //Opcional
   }
 
   /**

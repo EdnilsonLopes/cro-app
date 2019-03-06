@@ -9,15 +9,23 @@
 <custom-style>
     <style>
         html {
-            --lumo-primary-color: hsl(224, 72%, 48%);
-            --lumo-primary-color-10pct: hsla(214, 90%, 62%, 0.473);
-            --lumo-primary-color-50pct: hsla(59, 100%, 50%, 0.671);
+            --cro-primary-color: hsl(61, 100%, 80%);
+            --cro-secondary-color: rgba(9, 97, 230, 0.836);
+            /* --lumo-primary-color: hsl(64, 91%, 56%); 
+          --lumo-primary-color-10pct: hsla(219, 99%, 48%, 0.10);
+            --lumo-primary-color-50pct: rgba(9, 97, 230, 0.836);*/
         }
 
         .login-information {
             min-width: 300px;
             flex: 0;
-            background: var(--lumo-primary-color-50pct);
+            background: var(--cro-secondary-color);
+        }
+
+        .grid-in-form{
+            min-height: 300px;
+            width: 100%;
+            flex: 0;
         }
 
         /* Stack login-screen vertically on narrow screen */
@@ -42,7 +50,7 @@
         .menu-bar {
             flex-direction: column;
             flex-shrink: 0;
-            background:  hsla(64, 100%, 50%, 0.171);
+            background: var(--cro-primary-color);
             box-shadow: var(--overlay-box-shadow);
         }
 
@@ -57,6 +65,7 @@
 
         .menu-link {
             margin: 0 auto;
+            color: var(--cro-secondary-color);
         }
 
         .menu-link>span {
@@ -68,10 +77,12 @@
         }
 
         .product-form {
+            display: block;
             position: absolute;
             right: 0;
             bottom: 0;
             height: 100%;
+            width: 450px;
             overflow: auto;
             background: var(--lumo-base-color);
             box-shadow: var(--overlay-box-shadow);

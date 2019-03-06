@@ -61,9 +61,10 @@ public abstract class AbstractListView<T extends AbstractBasicEntity<?>>
     // Apply the filter to grid's data provider. TextField value is never null
     filter.addValueChangeListener(event -> dataProvider.setFilter(event.getValue()));
 
-    newObjButton =
-      new Button("Nov" + getArtigoEntidade() + " " + getNomeEntidade());
+    newObjButton = new Button();
+//      new Button("Nov" + getArtigoEntidade() + " " + getNomeEntidade());
     newObjButton.addThemeVariants(ButtonVariant.LUMO_PRIMARY);
+    newObjButton.addThemeVariants(ButtonVariant.LUMO_ICON);
     newObjButton.setIcon(VaadinIcon.PLUS_CIRCLE.create());
     newObjButton.addClickListener(click -> viewLogic.newObject());
 

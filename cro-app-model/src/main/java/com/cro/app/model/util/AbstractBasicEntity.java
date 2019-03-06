@@ -23,13 +23,13 @@ public abstract class AbstractBasicEntity<T extends Serializable>
   /**
    * @return o id da entidade
    */
-  public abstract Integer getId();
+  public abstract int getId();
 
   /**
    * @param id
    *            atualiza o valor do id
    */
-  public abstract void setId(Integer id);
+  public abstract void setId(int id);
 
   /**
    * Verifica se é um novo objeto
@@ -37,7 +37,7 @@ public abstract class AbstractBasicEntity<T extends Serializable>
    * @return {@link Boolean}
    */
   public Boolean isNewObject() {
-    return getId() == null || getId() == -1 || getId() == 0;
+    return getId() == -1 || getId() == 0;
   }
 
   @SuppressWarnings("unchecked")
@@ -50,7 +50,7 @@ public abstract class AbstractBasicEntity<T extends Serializable>
       return true;
     }
     AbstractBasicEntity<T> other = (AbstractBasicEntity<T>) obj;
-    if (this.getId().equals(other)) {
+    if (this.getId() == other.getId()) {
       return true;
     }
     return false;

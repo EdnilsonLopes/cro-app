@@ -28,6 +28,10 @@ import com.vaadin.flow.router.Route;
 public class LoginScreen
   extends FlexLayout {
 
+  /**
+   * Serial
+   */
+  private static final long serialVersionUID = -4055686491024833774L;
   private TextField username;
   private PasswordField password;
   private Button login;
@@ -85,8 +89,8 @@ public class LoginScreen
     login.addThemeVariants(ButtonVariant.LUMO_SUCCESS,
                            ButtonVariant.LUMO_PRIMARY);
 
-    buttons.add(forgotPassword = new Button("Forgot password?"));
-    forgotPassword.addClickListener(event -> showNotification(new Notification("Hint: try anything")));
+    buttons.add(forgotPassword = new Button("Esqueceu a senha?"));
+    forgotPassword.addClickListener(event -> showNotification(new Notification("A ser implementado")));
     forgotPassword.addThemeVariants(ButtonVariant.LUMO_TERTIARY);
 
     return loginForm;
@@ -96,7 +100,7 @@ public class LoginScreen
     VerticalLayout loginInformation = new VerticalLayout();
     loginInformation.setClassName("login-information");
 
-    H1 loginInfoHeader = new H1("Informaçãoes de Login");
+    H1 loginInfoHeader = new H1("Informações de Login");
     Span loginInfoText = new Span(
                                   "Colégio Raphael Oliveira. " +
                                     "Os menus apareceram de acordo " +

@@ -1,6 +1,7 @@
 package com.cro.app.model.entidade;
 
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -13,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -34,9 +37,19 @@ public class Professor
 
   @Column(length = 100)
   @NotNull(message = "Preencha o campo de nome.")
-  @Size(min = 2, max = 100,
+  @Size(min = 2,
         message = "O nome não pode ter menos que 2 caracteres!")
   private String nome;
+
+  @Column(length = 150)
+  @NotNull(message = "Preencha o campo de formação")
+  @Size(min = 2,
+        message = "O nome não pode ter menos que 2 caracteres!")
+  private String formacao;
+
+  @Temporal(TemporalType.DATE)
+  @Column
+  private Date dataNascimento;
 
   @Column(length = 15)
   private String telefone;
@@ -46,15 +59,15 @@ public class Professor
 
   @Column(nullable = false, length = 9)
   @NotNull(message = "Digite o CEP")
-  private String cep;
+  private String cep = "";
 
   @Column(nullable = false, length = 100)
   @NotNull(message = "Digite a cidade.")
-  private String cidade;
+  private String cidade = "";
 
   @Column(nullable = false, length = 100)
   @NotNull(message = "Digite o bairro.")
-  private String bairro;
+  private String bairro = "";
 
   @Column(length = 150)
   private String complemento;
@@ -65,10 +78,7 @@ public class Professor
   @OneToMany(mappedBy = "professor")
   private List<Turma> turmas;
 
-  @ManyToMany(cascade = {
-    CascadeType.PERSIST,
-    CascadeType.MERGE
-  })
+  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
   @JoinTable(name = "disciplina_professor",
              joinColumns = @JoinColumn(name = "id_professor",
                                        referencedColumnName = "id"),
@@ -77,12 +87,12 @@ public class Professor
   private List<Disciplina> disciplinas;
 
   @Override
-  public Integer getId() {
+  public int getId() {
     return id;
   }
 
   @Override
-  public void setId(Integer id) {
+  public void setId(int id) {
     this.id = id;
   }
 
@@ -215,14 +225,6 @@ public class Professor
   }
 
   /**
-   * Configura o valor da propriedade id.
-   * @param id atualiza {@link #id}
-   */
-  public void setId(int id) {
-    this.id = id;
-  }
-
-  /**
    * Retorna o valor da propriedade turmas.
    * @return {@link #turmas}
    */
@@ -277,6 +279,38 @@ public class Professor
   @Override
   public String toString() {
     return nome;
+  }
+
+  /**
+   * Retorna o valor da propriedade formacao.
+   * @return {@link #formacao}
+   */
+  public String getFormacao() {
+    return formacao;
+  }
+
+  /**
+   * Configura o valor da propriedade formacao.
+   * @param formacao atualiza {@link #formacao}
+   */
+  public void setFormacao(String formacao) {
+    this.formacao = formacao;
+  }
+
+  /**
+   * Retorna o valor da propriedade dataNascimento.
+   * @return {@link #dataNascimento}
+   */
+  public Date getDataNascimento() {
+    return dataNascimento;
+  }
+
+  /**
+   * Configura o valor da propriedade dataNascimento.
+   * @param dataNascimento atualiza {@link #dataNascimento}
+   */
+  public void setDataNascimento(Date dataNascimento) {
+    this.dataNascimento = dataNascimento;
   }
 
 }

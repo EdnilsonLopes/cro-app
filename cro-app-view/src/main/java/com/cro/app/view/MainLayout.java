@@ -2,6 +2,7 @@ package com.cro.app.view;
 
 
 import com.cro.app.view.disciplina.DisciplinaPage;
+import com.cro.app.view.professor.ProfessorPage;
 import com.cro.app.view.turma.TurmaPage;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -43,6 +44,9 @@ public class MainLayout
     menu.addView(DisciplinaPage.class,
                  DisciplinaPage.PAGE_NAME,
                  VaadinIcon.BOOK.create());
+    menu.addView(ProfessorPage.class,
+                 ProfessorPage.PAGE_NAME,
+                 VaadinIcon.GROUP.create());
     menu.addView(TurmaPage.class,
                  TurmaPage.PAGE_NAME,
                  VaadinIcon.ACADEMY_CAP.create());

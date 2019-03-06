@@ -8,6 +8,7 @@ import com.cro.app.view.util.AbstractListView;
 import com.cro.app.view.util.AbstractViewLogic;
 import com.cro.app.view.util.BeanForm;
 import com.cro.app.view.util.BeanGrid;
+import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
 
 
@@ -15,6 +16,7 @@ import com.vaadin.flow.router.Route;
  * @author Ednilson Brito Lopes
  */
 @Route(value = "turma", layout = MainLayout.class)
+@PageTitle(TurmaPage.PAGE_NAME)
 @SuppressWarnings("serial")
 public class TurmaPage
   extends AbstractListView<Turma> {
