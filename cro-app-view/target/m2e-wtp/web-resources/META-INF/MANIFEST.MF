@@ -1,5 +1,5 @@
 Manifest-Version: 1.0
-Built-By: Ednilson
-Build-Jdk: 1.8.0_191
+Built-By: EdnilsonLopes
+Build-Jdk: 1.8.0_202
 Created-By: Maven Integration for Eclipse
 

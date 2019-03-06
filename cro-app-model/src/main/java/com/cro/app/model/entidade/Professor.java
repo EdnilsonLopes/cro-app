@@ -3,6 +3,7 @@ package com.cro.app.model.entidade;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -78,13 +79,13 @@ public class Professor
   @OneToMany(mappedBy = "professor")
   private List<Turma> turmas;
 
-  @ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+  @ManyToMany
   @JoinTable(name = "disciplina_professor",
              joinColumns = @JoinColumn(name = "id_professor",
                                        referencedColumnName = "id"),
              inverseJoinColumns = @JoinColumn(name = "id_disciplina",
                                               referencedColumnName = "id"))
-  private List<Disciplina> disciplinas;
+  private Set<Disciplina> disciplinas;
 
   @Override
   public int getId() {
@@ -244,7 +245,7 @@ public class Professor
    * Retorna o valor da propriedade disciplinas.
    * @return {@link #disciplinas}
    */
-  public List<Disciplina> getDisciplinas() {
+  public Set<Disciplina> getDisciplinas() {
     return disciplinas;
   }
 
@@ -252,7 +253,7 @@ public class Professor
    * Configura o valor da propriedade disciplinas.
    * @param disciplinas atualiza {@link #disciplinas}
    */
-  public void setDisciplinas(List<Disciplina> disciplinas) {
+  public void setDisciplinas(Set<Disciplina> disciplinas) {
     this.disciplinas = disciplinas;
   }
 

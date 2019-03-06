@@ -1,6 +1,11 @@
 package com.cro.app.view.professor;
 
 
+import java.util.Collection;
+import java.util.Collections;
+
+import com.cro.app.model.DataService;
+import com.cro.app.model.entidade.Disciplina;
 import com.cro.app.model.entidade.Professor;
 import com.cro.app.view.disciplina.DisciplinaGrid;
 import com.cro.app.view.turma.TurmaGrid;
@@ -8,6 +13,7 @@ import com.cro.app.view.util.AbstractViewLogic;
 import com.cro.app.view.util.BeanForm;
 import com.cro.app.view.util.component.TabSheet;
 import com.vaadin.flow.component.Component;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.icon.VaadinIcon;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
@@ -80,11 +86,19 @@ public class ProfessorForm
   }
 
   private Component createDisciplinasLayout() {
-    VerticalLayout layout = new VerticalLayout();
-    disciplinaGrid = new DisciplinaGrid();
-    disciplinaGrid.addClassName("grid-in-form");
-    layout.add(disciplinaGrid);
-    return layout;
+    return createCheckBoxGroupLayout("Selecione as Disciplinas que o professor(a) leciona",
+                                     "chkDisc",
+                                     "disciplinas",
+                                     DataService.get().getDisciplinaDAO().loadAll());
+  }
+
+  CheckboxGroup<Disciplina> cbgDisciplinas;
+
+  private Component createDisciplinasCheckBox() {
+    cbgDisciplinas =
+      createCheckBoxGroup("disciplinas",
+                          DataService.get().getDisciplinaDAO().loadAll());
+    return cbgDisciplinas;
   }
 
   private Component createTurmasLayout() {
@@ -98,8 +112,10 @@ public class ProfessorForm
   @Override
   protected void doEdit() {
     if (getObject() != null) {
-      if (getObject().getDisciplinas() != null)
-        disciplinaGrid.setItems(getObject().getDisciplinas());
+//      if (getObject().getDisciplinas() != null) {
+//        cbgDisciplinas.updateSelection(getObject().getDisciplinas(),
+//                                       Collections.emptySet());
+//      }
       if (getObject().getTurmas() != null)
         turmaGrid.setItems(getObject().getTurmas());
     }

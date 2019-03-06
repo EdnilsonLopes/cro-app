@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 
@@ -12,6 +13,8 @@ import com.cro.app.model.util.AbstractBasicEntity;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
+import com.vaadin.flow.component.checkbox.CheckboxGroup;
+import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
@@ -96,6 +99,36 @@ public class BeanForm<T extends AbstractBasicEntity<?>>
     field.setValueChangeMode(ValueChangeMode.EAGER);
     binder.forField(field).withConverter(new DecimalConverter()).bind(propertyName);
     return field;
+  }
+
+  /**
+   * 
+   * @param propertyName
+   * @param items
+   * @return
+   */
+  protected <U> CheckboxGroup<U> createCheckBoxGroup(String propertyName,
+                                                     Collection<U> items) {
+    CheckboxGroup<U> checkboxGroup = new CheckboxGroup<>();
+    checkboxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
+    checkboxGroup.setItems(items);
+    binder.forField(checkboxGroup).bind(propertyName);
+    return checkboxGroup;
+  }
+
+  protected <U> Component createCheckBoxGroupLayout(String caption,
+                                                    String idField,
+                                                    String propertyName,
+                                                    Collection<U> items) {
+    VerticalLayout layout = new VerticalLayout();
+    CheckboxGroup<U> checkboxGroup =
+      createCheckBoxGroup(propertyName, items);
+    checkboxGroup.setId(idField);
+    Label label = new Label(caption);
+    label.setClassName("vaadin-label");
+    label.setFor(checkboxGroup);
+    layout.add(label, checkboxGroup);
+    return layout;
   }
 
   protected TextArea createTextArea(String caption,
@@ -279,7 +312,7 @@ public class BeanForm<T extends AbstractBasicEntity<?>>
       e.printStackTrace();
     }
   }
-  
+
   protected void doEdit() {
     //Opcional
   }
