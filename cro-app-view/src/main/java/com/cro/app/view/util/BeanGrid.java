@@ -1,40 +1,59 @@
 package com.cro.app.view.util;
 
+
 import java.text.SimpleDateFormat;
+import java.util.Collection;
 import java.util.Date;
 
 import com.cro.app.model.util.AbstractBasicEntity;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 
-public class BeanGrid<T extends AbstractBasicEntity> extends Grid<T> {
 
-	/**
-	 * Serial
-	 */
-	private static final long serialVersionUID = 6801616796253209084L;
+public class BeanGrid<T extends AbstractBasicEntity>
+  extends Grid<T> {
 
-	/**
-	 * Construtor
-	 */
-	public BeanGrid() {
-		setSizeFull();
-		addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
-	}
+  /**
+   * Serial
+   */
+  private static final long serialVersionUID = 6801616796253209084L;
 
-	/**
-	 * @return o objeto selecionado no grid
-	 */
-	public T getSelectedRow() {
-		return asSingleSelect().getValue();
-	}
+  /**
+   * Construtor
+   */
+  public BeanGrid() {
+    setSizeFull();
+    addThemeVariants(GridVariant.LUMO_ROW_STRIPES);
+  }
 
-	public void refresh(T obj) {
-		getDataCommunicator().refresh(obj);
-	}
+  /**
+   * @return o objeto selecionado no grid
+   */
+  public T getSelectedRow() {
+    return asSingleSelect().getValue();
+  }
 
-	protected String getDateInFormat(Date date) {
-		SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-		return format.format(date);
-	}
+  public void refresh(T obj) {
+    getDataCommunicator().refresh(obj);
+  }
+
+  protected String getDateInFormat(Date date) {
+    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+    return format.format(date);
+  }
+
+  protected <U> String getColectionInString(Collection<U> collection) {
+    String colecString = "";
+    if (collection != null) {
+      for (U obj : collection) {
+        if (colecString.isEmpty()) {
+          colecString = obj.toString();
+        }
+        else {
+          colecString += ", " + obj.toString();
+        }
+      }
+    }
+    return colecString;
+  }
 }

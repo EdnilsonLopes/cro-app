@@ -31,4 +31,9 @@ public class Category implements Serializable {
     public String toString() {
         return getName();
     }
+    
+    @Override
+    public boolean equals(Object obj) {
+      return super.equals(obj);
+    }
 }

@@ -16,6 +16,6 @@ public class ProfessorGrid
     addColumn(Professor::getNome).setFlexGrow(1).setHeader("Nome").setSortable(true);
     addColumn(Professor::getFormacao).setFlexGrow(1).setHeader("Formação").setSortable(true);
     addColumn(p -> getDateInFormat(p.getDataNascimento())).setFlexGrow(1).setHeader("Data de Nascimento").setSortable(true);
-    addColumn(Professor::getTelefone).setFlexGrow(1).setHeader("Telefone").setSortable(true);
+    addColumn(p -> getColectionInString(p.getDisciplinas())).setFlexGrow(1).setHeader("Leciona").setSortable(true);
   }
 }
