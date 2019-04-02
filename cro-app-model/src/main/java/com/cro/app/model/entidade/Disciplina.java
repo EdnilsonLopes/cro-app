@@ -25,7 +25,7 @@ import com.cro.app.model.util.AbstractBasicEntity;
 @NamedQuery(name = "findAll", query = "select d from Disciplina d")
 @SuppressWarnings("serial")
 public class Disciplina
-  extends AbstractBasicEntity<Integer> {
+  extends AbstractBasicEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -9,7 +9,7 @@ import com.cro.app.model.util.AbstractBasicEntity;
 import com.vaadin.flow.data.provider.ListDataProvider;
 
 
-public abstract class AbstractDataProvider<T extends AbstractBasicEntity<?>>
+public abstract class AbstractDataProvider<T extends AbstractBasicEntity>
   extends ListDataProvider<T> {
 
   /**

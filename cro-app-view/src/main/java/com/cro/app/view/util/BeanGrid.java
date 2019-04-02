@@ -7,7 +7,7 @@ import com.cro.app.model.util.AbstractBasicEntity;
 import com.vaadin.flow.component.grid.Grid;
 import com.vaadin.flow.component.grid.GridVariant;
 
-public class BeanGrid<T extends AbstractBasicEntity<?>> extends Grid<T> {
+public class BeanGrid<T extends AbstractBasicEntity> extends Grid<T> {
 
 	/**
 	 * Serial

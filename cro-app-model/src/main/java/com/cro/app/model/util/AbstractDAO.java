@@ -20,7 +20,7 @@ import com.cro.app.model.DataServiceImpl;
  *            tipo da entidade que será persistida
  */
 @SuppressWarnings("unchecked")
-public abstract class AbstractDAO<T extends AbstractBasicEntity<?>>
+public abstract class AbstractDAO<T extends AbstractBasicEntity>
   implements DataAccessObject<T> {
 
   /**

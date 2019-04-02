@@ -29,7 +29,7 @@ import com.cro.app.model.util.AbstractBasicEntity;
 @Entity
 @SuppressWarnings("serial")
 public class Turma
-  extends AbstractBasicEntity<Integer> {
+  extends AbstractBasicEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)

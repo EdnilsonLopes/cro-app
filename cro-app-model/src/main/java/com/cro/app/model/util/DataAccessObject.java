@@ -10,7 +10,7 @@ import java.util.List;
  * @param <T>
  *            Tipo da entidade que será persistida
  */
-public interface DataAccessObject<T extends AbstractBasicEntity<?>> extends Serializable {
+public interface DataAccessObject<T extends AbstractBasicEntity> extends Serializable {
 
 	/**
 	 * Insere um novo objeto no banco de dados

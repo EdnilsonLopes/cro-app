@@ -14,7 +14,7 @@ import com.vaadin.flow.router.HasUrlParameter;
 import com.vaadin.flow.router.OptionalParameter;
 
 
-public abstract class AbstractListView<T extends AbstractBasicEntity<?>>
+public abstract class AbstractListView<T extends AbstractBasicEntity>
   extends HorizontalLayout
   implements HasUrlParameter<String> {
 

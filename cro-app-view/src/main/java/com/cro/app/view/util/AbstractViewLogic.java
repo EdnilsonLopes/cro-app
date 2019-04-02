@@ -15,7 +15,7 @@ import com.cro.app.model.util.AbstractBasicEntity;
  *
  * @param <T>
  */
-public abstract class AbstractViewLogic<T extends AbstractBasicEntity<?>>
+public abstract class AbstractViewLogic<T extends AbstractBasicEntity>
   implements Serializable {
 
   /**

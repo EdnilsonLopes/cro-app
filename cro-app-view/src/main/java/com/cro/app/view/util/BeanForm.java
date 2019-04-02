@@ -37,7 +37,7 @@ import com.vaadin.flow.data.value.ValueChangeMode;
  * @param <T>
  *            tipo da entidade a ser edidade
  */
-public class BeanForm<T extends AbstractBasicEntity<?>>
+public class BeanForm<T extends AbstractBasicEntity>
   extends Div {
 
   /**
@@ -62,7 +62,7 @@ public class BeanForm<T extends AbstractBasicEntity<?>>
   private Class<T> type;
 
   public BeanForm(AbstractViewLogic<T> viewLogic) {
-    setClassName("product-form");
+    setClassName("bean-form");
     this.binder = new BeanValidationBinder<>(getType());
     this.viewLogic = viewLogic;
 
@@ -98,6 +98,14 @@ public class BeanForm<T extends AbstractBasicEntity<?>>
     return field;
   }
 
+  /**
+   * Cria um campo de texto com altura maior que a de um simples {@link TextField}
+   * @param caption
+   *            label do campo
+   * @param propertyName
+   *            nome da propriedada da entidade que será feito o bind
+   * @return um campo para editar valores decimais
+   */
   protected TextArea createTextArea(String caption,
                                     String propertyName) {
     TextArea field = new TextArea(caption);
@@ -279,7 +287,7 @@ public class BeanForm<T extends AbstractBasicEntity<?>>
       e.printStackTrace();
     }
   }
-  
+
   protected void doEdit() {
     //Opcional
   }

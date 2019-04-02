@@ -12,7 +12,7 @@ import java.io.Serializable;
  * @param <T>
  *            tipo da chave composta da entidade
  */
-public abstract class AbstractBasicEntity<T extends Serializable>
+public abstract class AbstractBasicEntity
   implements Serializable {
 
   /**
@@ -49,7 +49,7 @@ public abstract class AbstractBasicEntity<T extends Serializable>
     if (obj == this) {
       return true;
     }
-    AbstractBasicEntity<T> other = (AbstractBasicEntity<T>) obj;
+    AbstractBasicEntity other = (AbstractBasicEntity) obj;
     if (this.getId() == other.getId()) {
       return true;
     }
