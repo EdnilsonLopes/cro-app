@@ -5,7 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -37,15 +36,15 @@ public class Professor
   private int id;
 
   @Column(length = 100)
-  @NotNull(message = "Preencha o campo de nome.")
+  @NotNull(message = "O Nome deve ser informado!")
   @Size(min = 2,
-        message = "O nome não pode ter menos que 2 caracteres!")
+        message = "O Nome não pode ter menos que 2 caracteres!")
   private String nome;
 
   @Column(length = 150)
-  @NotNull(message = "Preencha o campo de formação")
+  @NotNull(message = "A Formação deve ser informada!")
   @Size(min = 2,
-        message = "O nome não pode ter menos que 2 caracteres!")
+        message = "A Formação não pode ter menos que 2 caracteres!")
   private String formacao;
 
   @Temporal(TemporalType.DATE)

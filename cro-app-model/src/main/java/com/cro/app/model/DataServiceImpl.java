@@ -10,6 +10,8 @@ import com.cro.app.model.dao.DisciplinaDAO;
 import com.cro.app.model.dao.DisciplinaDAOImpl;
 import com.cro.app.model.dao.ProfessorDAO;
 import com.cro.app.model.dao.ProfessorDAOImpl;
+import com.cro.app.model.dao.SalaDAO;
+import com.cro.app.model.dao.SalaDAOImpl;
 import com.cro.app.model.dao.TurmaDAO;
 import com.cro.app.model.dao.TurmaDAOImpl;
 
@@ -50,6 +52,11 @@ public class DataServiceImpl
   @Override
   public ProfessorDAO getProfessorDAO() {
     return ProfessorDAOImpl.getInstance();
+  }
+
+  @Override
+  public SalaDAO getSalaDAO() {
+    return SalaDAOImpl.getInstance();
   }
 
   @Override

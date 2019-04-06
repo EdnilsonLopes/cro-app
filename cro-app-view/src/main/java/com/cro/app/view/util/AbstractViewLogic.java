@@ -23,14 +23,14 @@ public abstract class AbstractViewLogic<T extends AbstractBasicEntity>
    */
   private static final long serialVersionUID = 865713311914120999L;
 
-  private AbstractListView<T> page;
+  private AbstractListPage<T> page;
 
   /**
    * Tipo da classe passada por parâmetro
    */
   //  private Class<T> type;
 
-  public AbstractViewLogic(AbstractListView<T> view) {
+  public AbstractViewLogic(AbstractListPage<T> view) {
     this.page = view;
   }
 
@@ -67,10 +67,10 @@ public abstract class AbstractViewLogic<T extends AbstractBasicEntity>
     page.clearSelection();
     page.saveObject(obj);
     setFragmentParameter("");
-    page.showSaveNotification(page.getNomeEntidade() + " " +
+    page.showSaveNotification(page.getNomeEntidade() + " \"" +
       obj + (newObject
-        ? " adicionad" + page.getArtigoEntidade()
-        : " atualizad" +
+        ? "\" adicionad" + page.getArtigoEntidade()
+        : "\" atualisad" +
           page.getArtigoEntidade()));
   }
 
@@ -78,8 +78,8 @@ public abstract class AbstractViewLogic<T extends AbstractBasicEntity>
     page.clearSelection();
     page.removeObject(obj);
     setFragmentParameter("");
-    page.showSaveNotification(page.getNomeEntidade() + " " + obj +
-      " removid" +
+    page.showSaveNotification(page.getNomeEntidade() + " \"" + obj +
+      "\" removid" +
       page.getArtigoEntidade());
   }
 

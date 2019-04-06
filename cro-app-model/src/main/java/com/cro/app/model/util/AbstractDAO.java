@@ -16,8 +16,7 @@ import com.cro.app.model.DataServiceImpl;
  * 
  * @author Ednilson Brito Lopes
  *
- * @param <T>
- *            tipo da entidade que será persistida
+ * @param <T> tipo da entidade que será persistida
  */
 @SuppressWarnings("unchecked")
 public abstract class AbstractDAO<T extends AbstractBasicEntity>
@@ -33,10 +32,26 @@ public abstract class AbstractDAO<T extends AbstractBasicEntity>
    */
   private EntityManagerFactory emf;
 
+  public EntityManagerFactory getEmf() {
+    return emf;
+  }
+
+  public void setEmf(EntityManagerFactory emf) {
+    this.emf = emf;
+  }
+
+  public EntityManager getEm() {
+    return em;
+  }
+
+  public void setEm(EntityManager em) {
+    this.em = em;
+  }
+
   /**
    * Gerenciador de entidades
    */
-  private EntityManager entityManager;
+  private EntityManager em;
 
   /**
    * Tipo da classe passada por parâmetro
@@ -52,16 +67,6 @@ public abstract class AbstractDAO<T extends AbstractBasicEntity>
   }
 
   /**
-   * @return o {@link #entityManager}
-   */
-  protected EntityManager getEntityManager() {
-    if (entityManager == null) {
-      entityManager = emf.createEntityManager();
-    }
-    return entityManager;
-  }
-
-  /**
    * @return o tipo {@link Class} da entidade usada como parâmetro na classe
    */
   private Class<T> getType() {
@@ -74,52 +79,68 @@ public abstract class AbstractDAO<T extends AbstractBasicEntity>
 
   @Override
   public void insert(T obj) {
+    em = getEmf().createEntityManager();
     try {
-      getEntityManager().getTransaction().begin();
-      getEntityManager().persist(obj);
-      getEntityManager().getTransaction().commit();
+      em.getTransaction().begin();
+      em.persist(obj);
+      em.getTransaction().commit();
     }
     catch (Exception e) {
-      getEntityManager().getTransaction().rollback();
+      em.getTransaction().rollback();
       throw new RuntimeException(e.getMessage());
+    }
+    finally {
+      em.close();
     }
   }
 
   @Override
   public void update(T obj) {
+    em = getEmf().createEntityManager();
     try {
-      getEntityManager().getTransaction().begin();
-      getEntityManager().merge(obj);
-      getEntityManager().getTransaction().commit();
+      em.getTransaction().begin();
+      em.merge(obj);
+      em.getTransaction().commit();
     }
     catch (Exception e) {
-      getEntityManager().getTransaction().rollback();
+      em.getTransaction().rollback();
       throw new RuntimeException(e.getMessage());
+    }
+    finally {
+      em.close();
     }
   }
 
   @Override
   public void delete(T obj) {
+    em = getEmf().createEntityManager();
     try {
-      getEntityManager().getTransaction().begin();
-      getEntityManager().remove(obj);
-      getEntityManager().getTransaction().commit();
+      em.getTransaction().begin();
+      em.remove(obj);
+      em.getTransaction().commit();
     }
     catch (Exception e) {
-      getEntityManager().getTransaction().rollback();
+      em.getTransaction().rollback();
       throw new RuntimeException(e.getMessage());
+    }
+    finally {
+      em.close();
     }
   }
 
   @Override
   public T load(T obj) {
-    return getEntityManager().find(getType(), obj.getId());
+    try {
+      return getEmf().createEntityManager().find(getType(), obj.getId());
+    }
+    finally {
+    }
   }
 
   @Override
   public List<T> loadAll() {
     String q = "select i from " + getEntityName() + " i";
-    Query query = getEntityManager().createQuery(q);
+    Query query = getEmf().createEntityManager().createQuery(q);
     return query.getResultList();
   }
 

@@ -35,24 +35,24 @@ public abstract class AbstractListView<T extends AbstractBasicEntity>
   //  private Class<T> type;
 
   public AbstractListView() {
-    setSizeFull();
-    HorizontalLayout topLayout = createTopBar();
-    grid = createBeanGrid();
-    grid.setDataProvider(dataProvider);
-    viewLogic = createViewLogic();
-    grid.asSingleSelect().addValueChangeListener(event -> viewLogic.rowSelected(event.getValue()));
-    form = createBeanForm();
-    VerticalLayout barAndGridLayout = new VerticalLayout();
-    barAndGridLayout.add(topLayout);
-    barAndGridLayout.add(grid);
-    barAndGridLayout.setFlexGrow(1, grid);
-    barAndGridLayout.setFlexGrow(0, topLayout);
-    barAndGridLayout.setSizeFull();
-    barAndGridLayout.expand(grid);
-    add(barAndGridLayout);
-    add(form);
-
-    viewLogic.init();
+//    setSizeFull();
+//    HorizontalLayout topLayout = createTopBar();
+//    grid = createBeanGrid();
+//    grid.setDataProvider(dataProvider);
+//    viewLogic = createViewLogic();
+//    grid.asSingleSelect().addValueChangeListener(event -> viewLogic.rowSelected(event.getValue()));
+//    form = createBeanForm();
+//    VerticalLayout barAndGridLayout = new VerticalLayout();
+//    barAndGridLayout.add(topLayout);
+//    barAndGridLayout.add(grid);
+//    barAndGridLayout.setFlexGrow(1, grid);
+//    barAndGridLayout.setFlexGrow(0, topLayout);
+//    barAndGridLayout.setSizeFull();
+//    barAndGridLayout.expand(grid);
+//    add(barAndGridLayout);
+//    add(form);
+//
+//    viewLogic.init();
   }
 
   private HorizontalLayout createTopBar() {

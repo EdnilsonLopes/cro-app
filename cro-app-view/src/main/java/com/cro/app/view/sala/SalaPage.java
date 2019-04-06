@@ -1,8 +1,8 @@
-package com.cro.app.view.turma;
+package com.cro.app.view.sala;
 
 
 import com.cro.app.model.DataService;
-import com.cro.app.model.entidade.Turma;
+import com.cro.app.model.entidade.Sala;
 import com.cro.app.model.util.DataAccessObject;
 import com.cro.app.view.MainLayout;
 import com.cro.app.view.util.AbstractListPage;
@@ -14,29 +14,34 @@ import com.vaadin.flow.router.Route;
 
 
 /**
+ * Página da entidade {@link Sala}
  * @author Ednilson Brito Lopes
  */
-@Route(value = "turma", layout = MainLayout.class)
-@PageTitle(TurmaPage.PAGE_NAME)
-@SuppressWarnings("serial")
-public class TurmaPage
-  extends AbstractListPage<Turma> {
+@Route(value = "sala", layout = MainLayout.class)
+@PageTitle(SalaPage.PAGE_NAME)
+public class SalaPage
+  extends AbstractListPage<Sala> {
 
-  public static final String PAGE_NAME = "Turmas";
+  /**
+   * Serial
+   */
+  private static final long serialVersionUID = -1523631726591548784L;
+
+  public static final String PAGE_NAME = "Sala";
 
   @Override
   protected void navigateTo(String fragmentParameter) {
-    UI.getCurrent().navigate(TurmaPage.class, fragmentParameter);
+    UI.getCurrent().navigate(SalaPage.class, fragmentParameter);
   }
 
   @Override
-  public BeanGrid<Turma> createBeanGrid() {
-    return new TurmaGrid();
+  public BeanGrid<Sala> createBeanGrid() {
+    return new SalaGrid();
   }
 
   @Override
-  public BeanForm<Turma> createBeanForm() {
-    return new TurmaForm();
+  public BeanForm<Sala> createBeanForm() {
+    return new SalaForm();
   }
 
   @Override
@@ -46,12 +51,12 @@ public class TurmaPage
 
   @Override
   public String getNomeEntidade() {
-    return "Turma";
+    return "Sala";
   }
 
   @Override
-  public DataAccessObject<Turma> getDao() {
-    return DataService.get().getTurmaDAO();
+  public DataAccessObject<Sala> getDao() {
+    return DataService.get().getSalaDAO();
   }
 
   @Override

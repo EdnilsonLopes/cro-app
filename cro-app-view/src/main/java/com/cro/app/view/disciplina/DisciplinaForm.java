@@ -21,13 +21,11 @@ public class DisciplinaForm
   private TextField nomeField;
   private TextArea descricaoField;
 
-  public DisciplinaForm(DisciplinaViewLogic disciplinaViewLogic) {
-    super(disciplinaViewLogic);
-    
+  public DisciplinaForm() {
     content = new VerticalLayout();
     content.setSizeUndefined();
     add(content);
-    
+
     nomeField = createTextField("Nome", "nome");
     content.add(nomeField);
 

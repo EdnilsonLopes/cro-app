@@ -4,6 +4,7 @@ package com.cro.app.model;
 import com.cro.app.model.dao.AlunoDAO;
 import com.cro.app.model.dao.DisciplinaDAO;
 import com.cro.app.model.dao.ProfessorDAO;
+import com.cro.app.model.dao.SalaDAO;
 import com.cro.app.model.dao.TurmaDAO;
 
 
@@ -43,6 +44,11 @@ public abstract class DataService {
    * @return uma instância de {@link ProfessorDAO}
    */
   public abstract ProfessorDAO getProfessorDAO();
+  
+  /**
+   * @return uma instância de {@link SalaDAO}
+   */
+  public abstract SalaDAO getSalaDAO();
 
   /**
    * @return uma instância de {@link TurmaDAO}

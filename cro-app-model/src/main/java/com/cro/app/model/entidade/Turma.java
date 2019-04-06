@@ -57,6 +57,10 @@ public class Turma
   @JoinColumn(name = "id_professor", referencedColumnName = "id")
   private Professor professor;
 
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "id_sala", referencedColumnName = "id")
+  private Sala sala;
+
   @Override
   public int getId() {
     return id;
@@ -154,6 +158,22 @@ public class Turma
   @Override
   public String toString() {
     return getNomeCompleto();
+  }
+
+  /**
+   * Retorna o valor da propriedade sala.
+   * @return {@link #sala}
+   */
+  public Sala getSala() {
+    return sala;
+  }
+
+  /**
+   * Configura o valor da propriedade sala.
+   * @param sala atualiza {@link #sala}
+   */
+  public void setSala(Sala sala) {
+    this.sala = sala;
   }
 
 }

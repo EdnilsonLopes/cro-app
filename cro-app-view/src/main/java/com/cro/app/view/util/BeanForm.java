@@ -64,6 +64,11 @@ public class BeanForm<T extends AbstractBasicEntity>
    */
   private Class<T> type;
 
+  public BeanForm() {
+    setClassName("bean-form");
+    this.binder = new BeanValidationBinder<>(getType());
+  }
+
   public BeanForm(AbstractViewLogic<T> viewLogic) {
     setClassName("bean-form");
     this.binder = new BeanValidationBinder<>(getType());
@@ -208,6 +213,7 @@ public class BeanForm<T extends AbstractBasicEntity>
   protected DatePicker createDateField(String caption,
                                        String propertyName) {
     DatePicker field = new DatePicker(caption);
+    field.setWidth("200px");
     binder.forField(field).withConverter(new LocalDateToDateConverter()).bind(propertyName);
     return field;
   }
@@ -382,6 +388,22 @@ public class BeanForm<T extends AbstractBasicEntity>
       format.setGroupingUsed(false);
       return format;
     }
+  }
+
+  public T getCurrentObject() {
+    return currentObject;
+  }
+
+  public void setCurrentObject(T currentObject) {
+    this.currentObject = currentObject;
+  }
+
+  public AbstractViewLogic<T> getViewLogic() {
+    return viewLogic;
+  }
+
+  public void setViewLogic(AbstractViewLogic<T> viewLogic) {
+    this.viewLogic = viewLogic;
   }
 
 }

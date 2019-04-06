@@ -38,8 +38,11 @@ public class BeanGrid<T extends AbstractBasicEntity>
   }
 
   protected String getDateInFormat(Date date) {
-    SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-    return format.format(date);
+    if (date != null) {
+      SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+      return format.format(date);
+    }
+    return null;
   }
 
   protected <U> String getColectionInString(Collection<U> collection) {

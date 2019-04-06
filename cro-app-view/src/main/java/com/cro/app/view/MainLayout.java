@@ -3,6 +3,7 @@ package com.cro.app.view;
 
 import com.cro.app.view.disciplina.DisciplinaPage;
 import com.cro.app.view.professor.ProfessorPage;
+import com.cro.app.view.sala.SalaPage;
 import com.cro.app.view.turma.TurmaPage;
 import com.vaadin.flow.component.dependency.HtmlImport;
 import com.vaadin.flow.component.icon.VaadinIcon;
@@ -50,7 +51,9 @@ public class MainLayout
     menu.addView(TurmaPage.class,
                  TurmaPage.PAGE_NAME,
                  VaadinIcon.ACADEMY_CAP.create());
-
+    menu.addView(SalaPage.class,
+                 SalaPage.PAGE_NAME,
+                 VaadinIcon.SPLIT.create());
     add(menu);
   }
 

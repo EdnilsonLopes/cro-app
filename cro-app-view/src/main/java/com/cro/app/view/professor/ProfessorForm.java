@@ -1,15 +1,11 @@
 package com.cro.app.view.professor;
 
 
-import java.util.Collection;
-import java.util.Collections;
-
 import com.cro.app.model.DataService;
 import com.cro.app.model.entidade.Disciplina;
 import com.cro.app.model.entidade.Professor;
 import com.cro.app.view.disciplina.DisciplinaGrid;
 import com.cro.app.view.turma.TurmaGrid;
-import com.cro.app.view.util.AbstractViewLogic;
 import com.cro.app.view.util.BeanForm;
 import com.cro.app.view.util.component.TabSheet;
 import com.vaadin.flow.component.Component;
@@ -21,6 +17,7 @@ import com.vaadin.flow.component.textfield.TextField;
 
 
 /**
+ * Formulário para edição de {@link Professor}
  * @author Ednilson Brito Lopes
  */
 @SuppressWarnings("serial")
@@ -33,8 +30,7 @@ public class ProfessorForm
 
   private DisciplinaGrid disciplinaGrid;
 
-  public ProfessorForm(AbstractViewLogic<Professor> viewLogic) {
-    super(viewLogic);
+  public ProfessorForm() {
     content = new VerticalLayout();
     content.setSizeUndefined();
     add(content);
@@ -112,10 +108,10 @@ public class ProfessorForm
   @Override
   protected void doEdit() {
     if (getObject() != null) {
-//      if (getObject().getDisciplinas() != null) {
-//        cbgDisciplinas.updateSelection(getObject().getDisciplinas(),
-//                                       Collections.emptySet());
-//      }
+      //      if (getObject().getDisciplinas() != null) {
+      //        cbgDisciplinas.updateSelection(getObject().getDisciplinas(),
+      //                                       Collections.emptySet());
+      //      }
       if (getObject().getTurmas() != null)
         turmaGrid.setItems(getObject().getTurmas());
     }

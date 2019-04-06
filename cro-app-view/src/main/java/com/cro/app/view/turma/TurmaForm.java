@@ -11,7 +11,6 @@ import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.icon.VaadinIcon;
-import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
 import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
@@ -24,8 +23,7 @@ import com.vaadin.flow.component.textfield.TextField;
 public class TurmaForm
   extends BeanForm<Turma> {
 
-  public TurmaForm(TurmaViewLogic viewLogic) {
-    super(viewLogic);
+  public TurmaForm() {
     VerticalLayout content = new VerticalLayout();
     content.setHeight("100%");
     content = new VerticalLayout();
@@ -40,27 +38,11 @@ public class TurmaForm
 
   private Component createTabsLayout() {
     TabSheet tabs = new TabSheet();
-    tabs.addTab("Geral", VaadinIcon.CLIPBOARD.create(), createTabGeral());
+    tabs.addTab("Geral",
+                VaadinIcon.CLIPBOARD_TEXT.create(),
+                createTabGeral());
     tabs.addTab("Alunos", VaadinIcon.CHILD.create(), createTabAlunos());
     return tabs;
-  }
-
-  private Component createLayout() {
-    VerticalLayout layout = new VerticalLayout();
-    layout.setMargin(false);
-    layout.setPadding(false);
-    layout.setSpacing(false);
-    layout = new VerticalLayout();
-    layout.setSizeUndefined();
-    HorizontalLayout hl = new HorizontalLayout();
-    hl.setWidth("100%");
-    hl.add(createSerieCbx(), createNomeEdit());
-    layout.add(hl, createProfessorCbx(), createDescricaoEdit());
-    AlunoTurmaGrid grid = new AlunoTurmaGrid();
-    grid.setItems(DataService.get().getAlunoDAO().loadAll());
-    grid.setHeight("100%");
-    layout.add(grid);
-    return layout;
   }
 
   private Component createTabGeral() {
@@ -74,7 +56,10 @@ public class TurmaForm
                           new ResponsiveStep("21em", 2));
     fl.setWidth("100%");
     fl.add(createSerieCbx(), createNomeEdit());
-    layout.add(fl, createProfessorCbx(), createDescricaoEdit());
+    layout.add(fl,
+               createProfessorCbx(),
+               createSalaCbx(),
+               createDescricaoEdit());
     return layout;
   }
 
@@ -91,12 +76,17 @@ public class TurmaForm
     return grid;
   }
 
-  @SuppressWarnings("unchecked")
   private Component createSerieCbx() {
     ComboBox<SerieEnum> cbxSerie =
       createComboBox("Serie", "serie", SerieEnum.getValues());
     cbxSerie.setWidth("100%");
     return cbxSerie;
+  }
+
+  private Component createSalaCbx() {
+    return createComboBox("Sala",
+                          "sala",
+                          DataService.get().getSalaDAO().loadAll());
   }
 
   private Component createProfessorCbx() {
