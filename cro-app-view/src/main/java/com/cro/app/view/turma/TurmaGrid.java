@@ -16,6 +16,7 @@ public class TurmaGrid
   public TurmaGrid() {
     addColumn(Turma::getNomeCompleto).setFlexGrow(1).setHeader("Turma").setSortable(true);
     addColumn(Turma::getProfessor).setFlexGrow(1).setHeader("Conselheiro").setSortable(true);
+    addColumn(Turma::getSala).setFlexGrow(1).setHeader("Sala").setSortable(true);
     addColumn(Turma::getDescricao).setFlexGrow(1).setHeader("Descrição").setSortable(true);
   }
 }

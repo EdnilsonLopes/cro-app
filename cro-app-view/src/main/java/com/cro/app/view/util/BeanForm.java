@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 
 import com.cro.app.model.util.AbstractBasicEntity;
+import com.cro.app.model.util.webService.WebServiceCep;
 import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.button.Button;
 import com.vaadin.flow.component.button.ButtonVariant;
@@ -18,6 +19,7 @@ import com.vaadin.flow.component.checkbox.CheckboxGroupVariant;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.datepicker.DatePicker;
 import com.vaadin.flow.component.dialog.Dialog;
+import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.html.Label;
 import com.vaadin.flow.component.orderedlayout.HorizontalLayout;
@@ -58,6 +60,12 @@ public class BeanForm<T extends AbstractBasicEntity>
   private Button deleteButton;
 
   private AbstractViewLogic<T> viewLogic;
+
+  private TextField cepField;
+  private TextField ufField;
+  private TextField logradouroField;
+  private TextField bairroField;
+  private TextField cidadeField;
 
   /**
    * Tipo da classe passada por parâmetro
@@ -100,7 +108,6 @@ public class BeanForm<T extends AbstractBasicEntity>
   protected TextField createDecimalField(String caption,
                                          String propertyName) {
     TextField field = new TextField(caption);
-    field.setWidth("100%");
     field.setValueChangeMode(ValueChangeMode.EAGER);
     binder.forField(field).withConverter(new DecimalConverter()).bind(propertyName);
     return field;
@@ -141,7 +148,6 @@ public class BeanForm<T extends AbstractBasicEntity>
   protected TextArea createTextArea(String caption,
                                     String propertyName) {
     TextArea field = new TextArea(caption);
-    field.setWidth("100%");
     field.setValueChangeMode(ValueChangeMode.EAGER);
     binder.forField(field).bind(propertyName);
     return field;
@@ -159,7 +165,6 @@ public class BeanForm<T extends AbstractBasicEntity>
    */
   protected TextField createTextField(String caption, String propertyName) {
     TextField field = new TextField(caption);
-    field.setWidth("100%");
     field.setValueChangeMode(ValueChangeMode.EAGER);
     binder.forField(field).bind(propertyName);
     return field;
@@ -178,7 +183,6 @@ public class BeanForm<T extends AbstractBasicEntity>
   protected TextField createIntegerField(String caption,
                                          String propertyName) {
     TextField field = new TextField(caption);
-    field.setWidth("100%");
     field.setValueChangeMode(ValueChangeMode.EAGER);
     binder.forField(field).withConverter(new IntegerConverter()).bind(propertyName);
     return field;
@@ -197,7 +201,6 @@ public class BeanForm<T extends AbstractBasicEntity>
                                            String propertyName,
                                            List<U> items) {
     ComboBox<U> combo = new ComboBox<>(caption, items);
-    combo.setWidth("100%");
     binder.forField(combo).bind(propertyName);
     return combo;
   }
@@ -213,8 +216,88 @@ public class BeanForm<T extends AbstractBasicEntity>
   protected DatePicker createDateField(String caption,
                                        String propertyName) {
     DatePicker field = new DatePicker(caption);
-    field.setWidth("200px");
     binder.forField(field).withConverter(new LocalDateToDateConverter()).bind(propertyName);
+    return field;
+  }
+
+  protected Component createEnderecoEdit() {
+    FormLayout layout = new FormLayout();
+    layout.setResponsiveSteps(new FormLayout.ResponsiveStep("50px", 1),
+                              new FormLayout.ResponsiveStep("150px", 3),
+                              new FormLayout.ResponsiveStep("250px", 5));
+    layout.add(createCepField());
+    layout.add(createUfField());
+    layout.add(createCidadeField());
+    layout.add(createBairroField());
+    layout.add(createLogradouroField());
+    layout.add(createNumeroField());
+    layout.add(createComplementoField());
+    return layout;
+  }
+
+  private TextField createCepField() {
+    cepField = new TextField("CEP");
+    cepField.setPattern("[0-9]*");
+    cepField.setMaxLength(8);
+    cepField.setMinLength(8);
+    binder.forField(cepField).bind("cep");
+    cepField.getElement().setAttribute("colspan", "1");
+    cepField.addValueChangeListener(e -> {
+      if (e.getValue() != null && e.getValue().length() == 8) {
+        WebServiceCep cep = WebServiceCep.searchCep(e.getValue());
+        ufField.setValue(cep.getUf());
+        cidadeField.setValue(cep.getCidade());
+        logradouroField.setValue(cep.getLogradouroFull());
+        bairroField.setValue(cep.getBairro());
+      }
+    });
+    return cepField;
+  }
+
+  private TextField createCidadeField() {
+    cidadeField = new TextField("Cidade");
+    cidadeField.setReadOnly(true);
+    cidadeField.getElement().setAttribute("colspan", "3");
+    binder.forField(cidadeField).bind("cidade");
+    return cidadeField;
+  }
+
+  private TextField createUfField() {
+    ufField = new TextField("UF");
+    ufField.setReadOnly(true);
+    ufField.getElement().setAttribute("colspan", "1");
+    binder.forField(ufField).bind("uf");
+    return ufField;
+  }
+
+  private TextField createLogradouroField() {
+    logradouroField = new TextField("Logradouro");
+    logradouroField.setMaxLength(200);
+    logradouroField.getElement().setAttribute("colspan", "3");
+    binder.forField(logradouroField).bind("logradouro");
+    return logradouroField;
+  }
+
+  private TextField createBairroField() {
+    bairroField = new TextField("Bairro");
+    bairroField.setMaxLength(200);
+    bairroField.getElement().setAttribute("colspan", "2");
+    binder.forField(bairroField).bind("bairro");
+    return bairroField;
+  }
+
+  private TextField createNumeroField() {
+    TextField field = new TextField("Número");
+    field.setMaxLength(10);
+    field.getElement().setAttribute("colspan", "1");
+    binder.forField(field).bind("numeroEndereco");
+    return field;
+  }
+
+  private TextField createComplementoField() {
+    TextField field = new TextField("Complemento");
+    field.getElement().setAttribute("colspan", "4s");
+    binder.forField(field).bind("complemento");
     return field;
   }
 
@@ -404,6 +487,14 @@ public class BeanForm<T extends AbstractBasicEntity>
 
   public void setViewLogic(AbstractViewLogic<T> viewLogic) {
     this.viewLogic = viewLogic;
+  }
+
+  /**
+   * Retorna o valor da propriedade binder.
+   * @return {@link #binder}
+   */
+  public Binder<T> getBinder() {
+    return binder;
   }
 
 }

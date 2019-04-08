@@ -28,7 +28,7 @@ import com.cro.app.model.util.AbstractBasicEntity;
 @Entity
 @SuppressWarnings("serial")
 public class Aluno
-  extends AbstractBasicEntity{
+  extends AbstractBasicEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.AUTO)
@@ -38,6 +38,10 @@ public class Aluno
   @Column(nullable = false, length = 100)
   @NotNull(message = "Digite o nome do aluno.")
   private String nome;
+
+  @Column(nullable = false, length = 11)
+  @NotNull(message = "O CPF deve ser informado.")
+  private String cpf;
 
   @Column(length = 100)
   private String nomePai;
@@ -56,6 +60,10 @@ public class Aluno
   @NotNull(message = "Digite o CEP")
   private String cep;
 
+  @Column(nullable = false, length = 2)
+  @NotNull(message = "Campo Obrigatório")
+  private String uf;
+
   @Column(nullable = false, length = 100)
   @NotNull(message = "Digite a cidade.")
   private String cidade;
@@ -64,11 +72,15 @@ public class Aluno
   @NotNull(message = "Digite o bairro.")
   private String bairro;
 
+  @Column(nullable = false, length = 150)
+  @NotNull(message = "Campo Obrigatório")
+  private String logradouro;
+
   @Column(length = 150)
   private String complemento;
 
   @Column(length = 10)
-  private Integer numeroEndereco;
+  private String numeroEndereco;
 
   @Temporal(TemporalType.DATE)
   @Column
@@ -240,7 +252,7 @@ public class Aluno
    * Retorna o valor da propriedade numeroEndereco.
    * @return {@link #numeroEndereco}
    */
-  public Integer getNumeroEndereco() {
+  public String getNumeroEndereco() {
     return numeroEndereco;
   }
 
@@ -248,7 +260,7 @@ public class Aluno
    * Configura o valor da propriedade numeroEndereco.
    * @param numeroEndereco atualiza {@link #numeroEndereco}
    */
-  public void setNumeroEndereco(Integer numeroEndereco) {
+  public void setNumeroEndereco(String numeroEndereco) {
     this.numeroEndereco = numeroEndereco;
   }
 
@@ -298,6 +310,54 @@ public class Aluno
    */
   public void setDataNacimento(Date dataNacimento) {
     this.dataNacimento = dataNacimento;
+  }
+
+  /**
+   * Retorna o valor da propriedade cpf.
+   * @return {@link #cpf}
+   */
+  public String getCpf() {
+    return cpf;
+  }
+
+  /**
+   * Configura o valor da propriedade cpf.
+   * @param cpf atualiza {@link #cpf}
+   */
+  public void setCpf(String cpf) {
+    this.cpf = cpf;
+  }
+
+  /**
+   * Retorna o valor da propriedade uf.
+   * @return {@link #uf}
+   */
+  public String getUf() {
+    return uf;
+  }
+
+  /**
+   * Configura o valor da propriedade uf.
+   * @param uf atualiza {@link #uf}
+   */
+  public void setUf(String uf) {
+    this.uf = uf;
+  }
+
+  /**
+   * Retorna o valor da propriedade logradouro.
+   * @return {@link #logradouro}
+   */
+  public String getLogradouro() {
+    return logradouro;
+  }
+
+  /**
+   * Configura o valor da propriedade logradouro.
+   * @param logradouro atualiza {@link #logradouro}
+   */
+  public void setLogradouro(String logradouro) {
+    this.logradouro = logradouro;
   }
 
 }
