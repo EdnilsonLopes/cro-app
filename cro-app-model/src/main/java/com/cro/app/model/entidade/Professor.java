@@ -3,7 +3,6 @@ package com.cro.app.model.entidade;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -84,7 +83,7 @@ public class Professor
                                        referencedColumnName = "id"),
              inverseJoinColumns = @JoinColumn(name = "id_disciplina",
                                               referencedColumnName = "id"))
-  private Set<Disciplina> disciplinas;
+  private List<Disciplina> disciplinas;
 
   @Override
   public int getId() {
@@ -244,7 +243,7 @@ public class Professor
    * Retorna o valor da propriedade disciplinas.
    * @return {@link #disciplinas}
    */
-  public Set<Disciplina> getDisciplinas() {
+  public List<Disciplina> getDisciplinas() {
     return disciplinas;
   }
 
@@ -252,7 +251,7 @@ public class Professor
    * Configura o valor da propriedade disciplinas.
    * @param disciplinas atualiza {@link #disciplinas}
    */
-  public void setDisciplinas(Set<Disciplina> disciplinas) {
+  public void setDisciplinas(List<Disciplina> disciplinas) {
     this.disciplinas = disciplinas;
   }
 

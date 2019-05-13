@@ -84,7 +84,7 @@ public class Aluno
 
   @Temporal(TemporalType.DATE)
   @Column
-  private Date dataNacimento;
+  private Date dataNascimento;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "id_turma", referencedColumnName = "id")
@@ -297,19 +297,19 @@ public class Aluno
   }
 
   /**
-   * Retorna o valor da propriedade dataNacimento.
-   * @return {@link #dataNacimento}
+   * Retorna o valor da propriedade dataNascimento.
+   * @return {@link #dataNascimento}
    */
-  public Date getDataNacimento() {
-    return dataNacimento;
+  public Date getDataNascimento() {
+    return dataNascimento;
   }
 
   /**
-   * Configura o valor da propriedade dataNacimento.
-   * @param dataNacimento atualiza {@link #dataNacimento}
+   * Configura o valor da propriedade dataNascimento.
+   * @param dataNascimento atualiza {@link #dataNascimento}
    */
-  public void setDataNacimento(Date dataNacimento) {
-    this.dataNacimento = dataNacimento;
+  public void setDataNascimento(Date dataNascimento) {
+    this.dataNascimento = dataNascimento;
   }
 
   /**

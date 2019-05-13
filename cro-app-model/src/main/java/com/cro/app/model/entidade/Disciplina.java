@@ -107,4 +107,13 @@ public class Disciplina
     return nome;
   }
 
+  @Override
+  public boolean equals(Object obj) {
+    if (obj instanceof Disciplina) {
+      Disciplina other = (Disciplina) obj;
+      return this.id == other.id;
+    }
+    return false;
+  }
+
 }

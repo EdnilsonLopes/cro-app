@@ -5,9 +5,12 @@ import java.lang.reflect.ParameterizedType;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
+import java.util.Set;
 
 import com.cro.app.model.util.AbstractBasicEntity;
 import com.cro.app.model.util.webService.WebServiceCep;
@@ -28,6 +31,9 @@ import com.vaadin.flow.component.textfield.TextArea;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.data.binder.BeanValidationBinder;
 import com.vaadin.flow.data.binder.Binder;
+import com.vaadin.flow.data.binder.Result;
+import com.vaadin.flow.data.binder.ValueContext;
+import com.vaadin.flow.data.converter.Converter;
 import com.vaadin.flow.data.converter.LocalDateToDateConverter;
 import com.vaadin.flow.data.converter.StringToBigDecimalConverter;
 import com.vaadin.flow.data.converter.StringToIntegerConverter;
@@ -126,7 +132,7 @@ public class BeanForm<T extends AbstractBasicEntity>
     CheckboxGroup<U> checkboxGroup = new CheckboxGroup<>();
     checkboxGroup.addThemeVariants(CheckboxGroupVariant.LUMO_VERTICAL);
     checkboxGroup.setItems(items);
-    binder.forField(checkboxGroup).bind(propertyName);
+    binder.forField(checkboxGroup).withConverter(new SetToListConverter<U>()).bind(propertyName);
     return checkboxGroup;
   }
 
@@ -249,9 +255,21 @@ public class BeanForm<T extends AbstractBasicEntity>
         cidadeField.setValue(cep.getCidade());
         logradouroField.setValue(cep.getLogradouroFull());
         bairroField.setValue(cep.getBairro());
+        cepField.setInvalid(false);
+      }
+      else {
+        cepField.setInvalid(true);
+        clearEndereco();
       }
     });
     return cepField;
+  }
+
+  private void clearEndereco() {
+    ufField.setValue(ufField.getEmptyValue());
+    cidadeField.setValue(cidadeField.getEmptyValue());
+    logradouroField.setValue(logradouroField.getEmptyValue());
+    bairroField.setValue(bairroField.getEmptyValue());
   }
 
   private TextField createCidadeField() {
@@ -471,6 +489,35 @@ public class BeanForm<T extends AbstractBasicEntity>
       format.setGroupingUsed(false);
       return format;
     }
+  }
+
+  private static class SetToListConverter<E>
+    implements Converter<Set<E>, List<E>> {
+
+    /**
+     * Serial
+     */
+    private static final long serialVersionUID = 1L;
+
+    @Override
+    public Result<List<E>> convertToModel(Set<E> value,
+                                          ValueContext context) {
+      if (value != null) {
+        List<E> items = new ArrayList<>(value);
+        return Result.ok(items);
+      }
+      return Result.ok(new ArrayList<>());
+    }
+
+    @Override
+    public Set<E> convertToPresentation(List<E> value,
+                                        ValueContext context) {
+      if (value != null) {
+        return new HashSet<E>(value);
+      }
+      return new HashSet<>();
+    }
+
   }
 
   public T getCurrentObject() {
