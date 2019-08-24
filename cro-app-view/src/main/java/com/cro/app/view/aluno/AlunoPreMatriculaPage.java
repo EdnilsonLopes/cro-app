@@ -12,7 +12,6 @@ import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.formlayout.FormLayout.ResponsiveStep;
 import com.vaadin.flow.component.html.Div;
 import com.vaadin.flow.component.orderedlayout.VerticalLayout;
-import com.vaadin.flow.component.orderedlayout.FlexComponent.Alignment;
 import com.vaadin.flow.component.textfield.TextField;
 import com.vaadin.flow.router.PageTitle;
 import com.vaadin.flow.router.Route;
@@ -60,22 +59,29 @@ public class AlunoPreMatriculaPage
     divContent.addClassName("pre-matricula-form");
     divContent.setTitle("Pré-Matricula de Alunos para o Colégio Raphael Oliveira.");
     VerticalLayout content = new VerticalLayout();
-    content.setAlignItems(Alignment.CENTER);
-    FormLayout fl = new FormLayout();
-    fl.setResponsiveSteps(new ResponsiveStep("200px", 1),
-                          new ResponsiveStep("350px", 2),
-                          new ResponsiveStep("520px", 4),
-                          new ResponsiveStep("800px", 6));
-    fl.add(createNomeEdit());
-    fl.add(createCpfEdit());
-    fl.add(createDataNascimentoEdit());
-    fl.add(createTurmaCbx());
-    fl.add(createNomeMae());
-    fl.add(createNomePai());
-    content.add(fl);
-    content.add(createEnderecoEdit());
-    divContent.add(content);
-    add(divContent);
+//    content.setSizeFull();
+    content.setPadding(true);
+    FormLayout layout = new FormLayout();
+    layout.setSizeFull();
+    layout.setResponsiveSteps(new ResponsiveStep("300px", 1),
+                          new ResponsiveStep("600px", 2),
+                          new ResponsiveStep("900px", 4),
+                          new ResponsiveStep("1200px", 6));
+    layout.add(createNomeEdit());
+    layout.add(createCpfEdit());
+    layout.add(createDataNascimentoEdit());
+    layout.add(createTurmaCbx());
+    layout.add(createNomeMae());
+    layout.add(createNomePai());
+    layout.add(createCepField());
+	layout.add(createUfField());
+	layout.add(createCidadeField());
+	layout.add(createBairroField());
+	layout.add(createLogradouroField());
+	layout.add(createNumeroField());
+	layout.add(createComplementoField());
+    content.add(layout);
+    add(content);
     getBinder().bindInstanceFields(this);
   }
 

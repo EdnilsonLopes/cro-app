@@ -4,175 +4,181 @@
   -- for more information see: https://cdn.vaadin.com/vaadin-lumo-styles/1.3.1/demo/compatibility.html
   -->
 <!-- Remember to import custom-style, which is included in the Polymer package -->
-<link rel="import"
-	href="../bower_components/polymer/lib/elements/custom-style.html">
+<link rel="import" href="../bower_components/polymer/lib/elements/custom-style.html">
 
 <custom-style>
-<style>
-html { -
-	-cro-primary-color: hsl(61, 100%, 80%); -
-	-cro-secondary-color: rgba(9, 97, 230, 0.836);
-	/* --lumo-primary-color: hsl(64, 91%, 56%); 
+	<style>
+		html {
+			--cro-primary-color: hsl(61, 100%, 80%);
+			--cro-secondary-color: rgba(9, 97, 230, 0.836);
+			/* --lumo-primary-color: hsl(64, 91%, 56%); 
           --lumo-primary-color-10pct: hsla(219, 99%, 48%, 0.10);
             --lumo-primary-color-50pct: rgba(9, 97, 230, 0.836);*/
-}
+		}
 
-.pre-matricula-form {
-	margin: 0 auto;
-	width: 50%; /* Valor da Largura */
-}
+		.pre-matricula-form {
+			margin: 0 auto;
+			width: 50%;
+			/* Valor da Largura */
+		}
 
-.login-information {
-	min-width: 300px;
-	flex: 0;
-	background: var(- -cro-secondary-color);
-}
+		.login-information {
+			min-width: 300px;
+			flex: 0;
+			background: var(--cro-secondary-color);
+		}
 
-.grid-in-form {
-	min-height: 300px;
-	width: 100%;
-	flex: 0;
-}
+		.grid-in-form {
+			min-height: 300px;
+			width: 100%;
+			flex: 0;
+		}
 
-/* Stack login-screen vertically on narrow screen */
-@media ( max-width : 800px) {
-	.login-screen {
-		flex-direction: column;
-	}
-	.login-information {
-		display: block;
-	}
-}
+		/* Stack login-screen vertically on narrow screen */
+		@media (max-width : 800px) {
+			.login-screen {
+				flex-direction: column;
+			}
 
-.main-layout {
-	flex-direction: row;
-	/* Used by the menu and form overlays */ -
-	-overlay-box-shadow: 0 0 3px 2px var(- -lumo-contrast-10pct);
-}
+			.login-information {
+				display: block;
+			}
+		}
 
-.menu-bar {
-	flex-direction: column;
-	flex-shrink: 0;
-	background: var(- -cro-primary-color);
-	box-shadow: var(- -overlay-box-shadow);
-}
+		.main-layout {
+			flex-direction: row;
+			/* Used by the menu and form overlays */
+			--overlay-box-shadow: 0 0 3px 2px var(--lumo-contrast-10pct);
+		}
 
-.menu-header {
-	padding: 11px 16px;
-}
+		.menu-bar {
+			flex-direction: column;
+			flex-shrink: 0;
+			background: var(--cro-primary-color);
+			box-shadow: var(--overlay-box-shadow);
+		}
 
-.menu-bar vaadin-tabs {
-	align-items: flex-start;
-	transition: transform 300ms;
-}
+		.menu-header {
+			padding: 11px 16px;
+		}
 
-.menu-link {
-	margin: 0 auto;
-	color: var(- -cro-secondary-color);
-}
+		.menu-bar vaadin-tabs {
+			align-items: flex-start;
+			transition: transform 300ms;
+		}
 
-.menu-link>span {
-	display: block;
-}
+		.menu-link {
+			margin: 0 auto;
+			color: var(--cro-secondary-color);
+		}
 
-.menu-button {
-	display: none;
-}
+		.menu-link>span {
+			display: block;
+		}
 
-.bean-form {
-	display: block;
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	height: 100%;
-	width: 600px;
-	overflow: auto;
-	background: var(- -lumo-base-color);
-	box-shadow: var(- -overlay-box-shadow);
-}
+		.menu-button {
+			display: none;
+		}
 
-/* On narrow screens, move the side bar to the top,
+		.bean-form {
+			display: block;
+			position: absolute;
+			right: 0;
+			bottom: 0;
+			height: 100%;
+			width: 600px;
+			overflow: auto;
+			background: var(--lumo-base-color);
+			box-shadow: var(--overlay-box-shadow);
+		}
+
+		/* On narrow screens, move the side bar to the top,
          * except for the link-tabs, which are hidden but
          * can be opened via a button.
          */
-@media ( max-width : 800px) {
-	.main-layout {
-		flex-direction: column; -
-		-top-bar-height: 50px; -
-		-top-bar-margin: 5vw;
-	}
-	.menu-bar {
-		flex-direction: row;
-		align-items: center;
-		justify-content: space-between;
-		height: var(- -top-bar-height);
-		margin: 0 var(- -top-bar-margin);
-		background: none;
-		box-shadow: none;
-	}
-	.menu-bar vaadin-tabs {
-		transform: translateX(calc(-100% - var(- -top-bar-margin)));
-		position: absolute;
-		top: var(- -top-bar-height);
-		height: calc(100% - var(- -top-bar-height));
-		z-index: 100;
-		box-shadow: var(- -overlay-box-shadow);
-		background: var(- -lumo-base-color);
-	}
-	.menu-bar .show-tabs {
-		transform: translateX(calc(0% - var(- -top-bar-margin)));
-	}
-	.menu-button {
-		display: block;
-	}
-	.bean-form {
-		height: calc(100% - var(- -top-bar-height));
-	}
-}
+		@media (max-width : 800px) {
+			.main-layout {
+				flex-direction: column;
+				--top-bar-height: 50px;
+				--top-bar-margin: 5vw;
+			}
 
-@media ( max-width : 550px) {
-	.bean-form {
-		width: 100%;
-		/* Prevent text-fields from overflowing on narrow screens */ -
-		-vaadin-text-field-default-width: 6em;
-	}
-}
+			.menu-bar {
+				flex-direction: row;
+				align-items: center;
+				justify-content: space-between;
+				height: var(--top-bar-height);
+				margin: 0 var(--top-bar-margin);
+				background: none;
+				box-shadow: none;
+			}
 
-/* Color codes for the availability statuses of the products */
-.Available {
-	color: #2dd085;
-}
+			.menu-bar vaadin-tabs {
+				transform: translateX(calc(-100% - var(--top-bar-margin)));
+				position: absolute;
+				top: var(--top-bar-height);
+				height: calc(100% - var(--top-bar-height));
+				z-index: 100;
+				box-shadow: var(--overlay-box-shadow);
+				background: var(--lumo-base-color);
+			}
 
-.Coming {
-	color: #ffc66e;
-}
+			.menu-bar .show-tabs {
+				transform: translateX(calc(0% - var(--top-bar-margin)));
+			}
 
-.Discontinued {
-	color: #f54993;
-}
+			.menu-button {
+				display: block;
+			}
 
-/* Replicating the labels of official Vaadin components
+			.bean-form {
+				height: calc(100% - var(--top-bar-height));
+			}
+		}
+
+		@media (max-width : 550px) {
+			.bean-form {
+				width: 100%;
+				/* Prevent text-fields from overflowing on narrow screens */
+				--vaadin-text-field-default-width: 6em;
+			}
+		}
+
+		/* Color codes for the availability statuses of the products */
+		.Available {
+			color: #2dd085;
+		}
+
+		.Coming {
+			color: #ffc66e;
+		}
+
+		.Discontinued {
+			color: #f54993;
+		}
+
+		/* Replicating the labels of official Vaadin components
          * for the CheckBoxGroup add-on.
         */
-.vaadin-label {
-	align-self: flex-start;
-	color: var(- -lumo-secondary-text-color);
-	font-weight: 500;
-	font-size: var(- -lumo-font-size-s);
-	margin-left: calc(var(- -lumo-border-radius)/4);
-	transition: color 0.2s;
-	line-height: 1;
-	padding-bottom: 0.5em;
-	overflow: hidden;
-	white-space: nowrap;
-	text-overflow: ellipsis;
-	position: relative;
-	max-width: 100%;
-	box-sizing: border-box;
-}
+		.vaadin-label {
+			align-self: flex-start;
+			color: var(--lumo-secondary-text-color);
+			font-weight: 500;
+			font-size: var(--lumo-font-size-s);
+			margin-left: calc(var(--lumo-border-radius)/4);
+			transition: color 0.2s;
+			line-height: 1;
+			padding-bottom: 0.5em;
+			overflow: hidden;
+			white-space: nowrap;
+			text-overflow: ellipsis;
+			position: relative;
+			max-width: 100%;
+			box-sizing: border-box;
+		}
 
-.vaadin-label:hover {
-	color: var(- -lumo-body-text-color);
-}
-</style>
+		.vaadin-label:hover {
+			color: var(--lumo-body-text-color);
+		}
+	</style>
 </custom-style>
